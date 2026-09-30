@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uzair Baig | BS Software Engineering Student</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+        
+        :root { --primary: 234 179 8; }
+        
+        body { font-family: 'Inter', system_ui, sans-serif; }
+        .logo-font { font-family: 'Space Grotesk', sans-serif; }
+
+        .hero-bg {
+            background: linear-gradient(-45deg, #0a0a0a, #1f2937, #312e81, #1e3a8a);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glow-text { text-shadow: 0 0 20px rgb(234 179 8), 0 0 40px rgb(234 179 8); }
+        
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .project-card:hover {
+            transform: translateY(-15px) scale(1.04);
+            box-shadow: 0 30px 60px -15px rgb(234 179 8 / 0.2);
+        }
+
+        .filter-btn.active {
+            background-color: rgb(234 179 8);
+            color: black;
+            transform: scale(1.05);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.9s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: rgb(234 179 8);
+            transition: width 0.4s ease;
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .input-focus:focus {
+            box-shadow: 0 0 0 5px rgba(234, 179, 8, 0.3);
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-200 overflow-x-hidden">
+
+    <!-- NAVBAR -->
+    <nav id="navbar" class="bg-zinc-950/95 backdrop-blur-xl fixed top-0 left-0 right-0 z-50 border-b border-zinc-800">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-yellow-400 rounded-3xl flex items-center justify-center text-zinc-950 font-bold text-4xl logo-font">U</div>
+                <span class="text-3xl font-bold tracking-tighter logo-font text-white">Uzair Baig</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center gap-10 text-base font-medium">
+                <a href="#about" class="nav-link text-zinc-300 hover:text-white transition-colors">About</a>
+                <a href="#projects" class="nav-link text-zinc-300 hover:text-white transition-colors">Projects</a>
+                <a href="#skills" class="nav-link text-zinc-300 hover:text-white transition-colors">Skills</a>
+                <a href="#experience" class="nav-link text-zinc-300 hover:text-white transition-colors">Experience</a>
+                <a href="#blogs" class="nav-link text-zinc-300 hover:text-white transition-colors">Blog</a>
+                <a href="#achievements" class="nav-link text-zinc-300 hover:text-white transition-colors">Achievements</a>
+                <a href="#contact" class="nav-link text-zinc-300 hover:text-white transition-colors">Contact</a>
+            </div>
+
+            <a href="Uzair-Baig-CV.pdf" download 
+               class="hidden md:flex items-center gap-3 bg-yellow-400 hover:bg-amber-300 text-zinc-950 px-7 py-3.5 rounded-3xl font-semibold transition-all">
+                <i class="fa-solid fa-download"></i> Resume
+            </a>
+
+            <!-- Mobile Hamburger -->
+            <button id="mobile-menu-btn" class="md:hidden text-3xl text-yellow-400">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-zinc-950 border-t border-zinc-800 px-6 py-8">
+            <div class="flex flex-col gap-8 text-lg font-medium">
+                <a href="#about" class="mobile-nav-link">About Me</a>
+                <a href="#projects" class="mobile-nav-link">Projects</a>
+                <a href="#skills" class="mobile-nav-link">Skills</a>
+                <a href="#experience" class="mobile-nav-link">Experience</a>
+                <a href="#blogs" class="mobile-nav-link">Blog</a>
+                <a href="#achievements" class="mobile-nav-link">Achievements</a>
+                <a href="#contact" class="mobile-nav-link">Contact</a>
+                <a href="my-cv.pdf" download class="mt-4 bg-yellow-400 text-zinc-950 py-5 rounded-3xl text-center font-semibold flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-download"></i> Download Resume
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="hero-bg min-h-screen flex items-center relative">
+        <div class="max-w-7xl mx-auto px-6 pt-20 md:pt-0 grid md:grid-cols-2 gap-12 items-center h-screen relative z-10">
+            <div class="space-y-8">
+                <div class="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md px-8 py-4 rounded-3xl text-sm font-medium">
+                    <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                    BS Software Engineering Student
+                </div>
+                
+                <h1 class="text-6xl md:text-7xl font-bold tracking-tighter leading-none glow-text">
+                    Hi, I'm <span class="text-yellow-400">Uzair Baig</span>
+                </h1>
+                
+                <p class="text-4xl md:text-5xl font-semibold text-zinc-400">Building the future with code</p>
+                
+                <p class="max-w-lg text-xl text-zinc-300 leading-relaxed">
+                    Passionate BS Software Engineering student from Rawalpindi. 
+                    I turn ideas into working applications using C++, Python, OOP and DSA.
+                    Enthusiastic and detail-oriented software engineer with a passion for building innovative solutions.
+                </p>
+
+                <div class="flex flex-wrap gap-5">
+                    <a href="#projects" class="bg-yellow-400 hover:bg-amber-300 transition-all text-zinc-950 px-10 py-6 rounded-3xl font-semibold text-lg flex items-center gap-3">
+                        Explore My Projects
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="#contact" class="border-2 border-yellow-400 hover:border-yellow-400 px-10 py-6 rounded-3xl font-semibold text-lg">
+                        Let's Connect
+                    </a>
+                </div>
+
+                <div class="flex gap-8 text-4xl pt-6">
+                    <a href="https://github.com/UzairBaig991?tab=repositories" target="_blank" class="hover:text-yellow-400 transition"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/uzair-baig-b502ab2a5/" target="_blank" class="hover:text-yellow-400 transition"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=100089754206976" target="_blank" class="hover:text-yellow-400 transition"><i class="fa-brands fa-facebook"></i></a>
+                </div>
+            </div>
+
+            <!-- Your Personal Picture -->
+            <div class="flex justify-center">
+                <img src="images/my-picture-3.jpg" 
+                     alt="Uzair Baig" 
+                     class="w-80 h-80 md:w-[420px] md:h-[420px] object-cover rounded-3xl border-8 border-yellow-400/30 shadow-2xl transition-all hover:rotate-3">
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT ME + BACKGROUND -->
+    <section id="about" class="py-28 bg-zinc-950 fade-in">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="uppercase tracking-[4px] text-yellow-400 text-sm font-medium mb-4">CHAPTER 01 — MY STORY</div>
+            <h2 class="text-5xl md:text-6xl font-bold tracking-tighter mb-12">About Me</h2>
+            
+            <div class="grid md:grid-cols-12 gap-16">
+                <div class="md:col-span-7 text-lg leading-relaxed text-zinc-300 space-y-8">
+                    <p>
+                        Hello! I'm Uzair Baig, a passionate BS Software Engineering student. 
+                        My ambition is to become a skilled full-stack developer who builds clean, efficient, and user-friendly applications.
+                    </p>
+                    <p>
+                        I enjoy solving problems with code and learning new technologies every day. 
+                        Currently focusing on C++, Python, OOP, DSA and modern web development.
+                    </p>
+                    
+                    <!-- Education & Certifications -->
+                    <div class="mt-16">
+    <h3 class="text-3xl font-semibold mb-8">Education &amp; Certifications</h3>
+
+    <div class="space-y-10">
+        <!-- BS Software Engineering -->
+        <div class="flex gap-8">
+            <div class="w-36 text-yellow-400 font-medium">2023 — 2027</div>
+            <div>
+                <div class="font-semibold text-xl">BS Software Engineering</div>
+                <div class="text-zinc-400">
+                    Riphah International University, Islamabad, Pakistan
+                </div>
+                <div class="text-zinc-500 text-sm">
+                    Currently enrolled (5th Semester)
+                </div>
+            </div>
+        </div>
+
+        <!-- Intermediate -->
+        <div class="flex gap-8">
+            <div class="w-36 text-yellow-400 font-medium">2021 — 2023</div>
+            <div>
+                <div class="font-semibold text-xl">Intermediate (HSSC)</div>
+                <div class="text-zinc-400">
+                    F.G Sir Syed College, The Mall, Rawalpindi
+                </div>
+            </div>
+        </div>
+
+        <!-- Matriculation -->
+        <div class="flex gap-8">
+            <div class="w-36 text-yellow-400 font-medium">2009 — 2021</div>
+            <div>
+                <div class="font-semibold text-xl">Matriculation</div>
+                <div class="text-zinc-400">
+                    Civil College of Commerce and Management, Rawalpindi
+                </div>
+            </div>
+        </div>
+
+        <!-- Certification -->
+        <div class="flex gap-8">
+            <div class="w-36 text-yellow-400 font-medium">2023 — 2024</div>
+            <div>
+                <div class="font-semibold text-xl">
+                    CPA: Programming Essentials in C++
+                </div>
+                <div class="text-zinc-400">
+                    Cisco Networking Academy
+                </div>
+            </div>
+        </div>
+        <!-- Certification -->
+        <div class="flex gap-8">
+            <div class="w-36 text-yellow-400 font-medium">March 2026 — May 2026</div>
+            <div>
+                <div class="font-semibold text-xl">
+                    Internship at Arch Technologies
+                </div>
+                <div class="text-zinc-400">
+                    Arch Technologies, Islamabad, Pakistan
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                <div class="md:col-span-5 bg-zinc-900 rounded-3xl p-10 text-center">
+                    <div class="text-7xl font-bold text-yellow-400">25+</div>
+                    <div class="text-sm tracking-widest mt-3">ACADEMIC PROJECTS</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS SECTION (Your 4 Real Projects) -->
+    <section id="projects" class="py-28 bg-zinc-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16">
+                <div>
+                    <div class="uppercase tracking-[4px] text-yellow-400 text-sm font-medium">CHAPTER 02 — WORK</div>
+                    <h2 class="text-5xl font-bold tracking-tighter">My Projects</h2>
+                </div>
+                
+                <!-- Filters -->
+                <div class="flex flex-wrap gap-3 mt-8" id="project-filters">
+                    <button onclick="filterProjects('all')" class="filter-btn active px-7 py-3 rounded-3xl text-sm font-medium">All</button>
+                    <button onclick="filterProjects('cpp')" class="filter-btn px-7 py-3 rounded-3xl text-sm font-medium border border-zinc-700">C++</button>
+                    <button onclick="filterProjects('python')" class="filter-btn px-7 py-3 rounded-3xl text-sm font-medium border border-zinc-700">Python</button>
+                    <button onclick="filterProjects('dsa')" class="filter-btn px-7 py-3 rounded-3xl text-sm font-medium border border-zinc-700">DSA</button>
+                    <button onclick="filterProjects('assembly')" class="filter-btn px-7 py-3 rounded-3xl text-sm font-medium border border-zinc-700">Assembly</button>
+                    <button onclick="filterProjects('html')" class="filter-btn px-7 py-3 rounded-3xl text-sm font-medium border border-zinc-700">HTML</button>
+                    <button onclick="filterProjects('node.js')" class="filter-btn px-7 py-3 rounded-3xl text-sm font-medium border border-zinc-700">Node.js</button>
+                    <button onclick="filterProjects('react.js')" class="filter-btn px-7 py-3 rounded-3xl text-sm font-medium border border-zinc-700">React.js</button>
+                    <button onclick="filterProjects('react native')" class="filter-btn px-7 py-3 rounded-3xl text-sm font-medium border border-zinc-700">React Native</button>
+                    <button onclick="filterProjects('flutter')" class="filter-btn px-7 py-3 rounded-3xl text-sm font-medium border border-zinc-700">Flutter</button>
+                    <button onclick="filterProjects('kotlin')" class="filter-btn px-7 py-3 rounded-3xl text-sm font-medium border border-zinc-700">Kotlin</button>
+                </div>
+            </div>
+
+            <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1: Employee Manager -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="cpp">
+                    <img src="images/employee-manager.jpg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Employee Manager</div>
+                                <div class="text-yellow-400 text-sm">First C++ Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2023</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: C++<br>
+                            Outcome: Console application with full CRUD operations for managing employee records.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1/blob/main/1st-Semester-Employee-System.cpp" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-speakap"></i> Employee Manager
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: Music Playlist -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="cpp">
+                    <img src="images/music-playlist.png" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Music Playlist Manager</div>
+                                <div class="text-yellow-400 text-sm">OOP in C++</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2024</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: C++, OOP Concepts<br>
+                            Outcome: Object-oriented playlist system with add, delete, search and play functionality.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-spotify"></i> Music Playlist Manager
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3: Banking System -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="python">
+                    <img src="images/banking-system.jpg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Banking System</div>
+                                <div class="text-yellow-400 text-sm">Python Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2024</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: Python<br>
+                            Outcome: Complete console banking app with account creation, deposit, withdraw and balance inquiry.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1/blob/main/3rd-Semester-SE-Banking-System.py" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-cc-visa"></i> Banking System
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 4: Restaurant Management System -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="assembly">
+                    <img src="images/restaurant-system.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Restaurant Management System</div>
+                                <div class="text-yellow-400 text-sm">Assembly Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2024</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: Assembly<br>
+                            Outcome: Complete console restaurant app with different menus, give order, take order and menu inquiry according to the time.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1/blob/main/3rd-Semester-COAL-Restaurant-System.asm" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-yelp"></i> Restaurant System
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5: Maze Solver -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="dsa">
+                    <img src="images/maze-solver.png" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Maze Solver</div>
+                                <div class="text-yellow-400 text-sm">DSA Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2025</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: Python, Graph Algorithms (DFS/BFS)<br>
+                            Outcome: Visual maze solver using Depth-First and Breadth-First Search.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-slack"></i> Maze Solver
+                            </a>
+                        </div>
+                    </div>
+                </div> 
+                <!-- Project 6: Doctor Appointment System -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="node.js">
+                    <img src="images/doctor-appointment.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Doctor Appointment System</div>
+                                <div class="text-yellow-400 text-sm">Node.js Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2025</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Group Project<br>
+                            Tech: Node.js<br>
+                            Outcome: Complete console doctor appointment system with scheduling, patient management, and appointment tracking.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/Prescripto" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-accessible-icon"></i> Doctor Appointment System
+                            </a>
+                        </div>
+                    </div>
+                </div> 
+                <!-- Project 7: Guesss the Number Game -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="html">
+                    <img src="images/guess-the-number.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Guess the Number Game</div>
+                                <div class="text-yellow-400 text-sm">HTML/CSS/JavaScript Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2024</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: HTML/CSS/JavaScript<br>
+                            Outcome: Complete interactive number guessing game with hints and score tracking.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/AnalysisofAlgorithmSE/blob/main/SemesterProject.html" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-dropbox"></i> Guess the Number Game
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Project 8: Simple To-Do List -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="node.js">
+                    <img src="images/Simple To-do App.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Simple To-Do List</div>
+                                <div class="text-yellow-400 text-sm">Node.js Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: HTML/CSS/JavaScript Node.js<br>
+                            Outcome: Complete interactive to-do list app with task management and tracking.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/To-Do-App" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-trello"></i> Simple To-Do List
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Project 9: Invoice Management App -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="node.js">
+                    <img src="images/astraledger.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Invoice Management</div>
+                                <div class="text-yellow-400 text-sm">Node.js Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2025-26</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: Node.js<br>
+                            Outcome: Complete interactive invoice management app with invoice management features.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991?tab=repositories" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-sellsy"></i> Astraledger (Invoice Management App)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Project 10: Simple To-Do App -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="html">
+                    <img src="images/simple-to-do.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Simple To-Do App</div>
+                                <div class="text-yellow-400 text-sm">HTML Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: HTML/CSS/JavaScript<br>
+                            Outcome: Complete interactive to-do app using HTML with task management and tracking.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://uzairbaig991.github.io/Simple-To-Do-App/" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-stack-exchange"></i> Simple To-Do App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 11: Music Playlist -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="html">
+                    <img src="images/music-Playlist.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Music Playlist</div>
+                                <div class="text-yellow-400 text-sm">HTML, CSS, Javascript</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: HTML, CSS, JavaScript<br>
+                            Outcome: Interactive music playlist with add, delete, search and play functionality.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://uzairbaig991.github.io/MUSIC-PLAYLIST/" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-spotify"></i> Music Playlist
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <!-- Project 12: Simple Social Media Platform -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="node.js">
+                    <img src="images/connecthub.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Simple Social Media Platform</div>
+                                <div class="text-yellow-400 text-sm">Node.js Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: Node.js/React.js/Css/Tailwind<br>
+                            Outcome: Simple Social Media Platform in which users can interact with each other, like and dislike posts.                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/Connect-Hub" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-hashtag"></i> Simple Social Media Platform
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 13: Expense Tracker App -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="html">
+                    <img src="images/expense-tracker.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Expense Tracker App</div>
+                                <div class="text-yellow-400 text-sm">HTML/CSS/JavaScript</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: HTML, CSS, JavaScript<br>
+                            Outcome: Simple expense tracking application with add, delete, and view functionality.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://uzairbaig991.github.io/Syntecxhub-Expense-Tracker/" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-dollar-sign"></i> Expense Tracker App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 14: Weather App -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="react.js">
+                    <img src="images/weather-app.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Weather App</div>
+                                <div class="text-yellow-400 text-sm">React.js </div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: React.js <br>
+                            Outcome: Simple weather application with current conditions and forecast.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/Syntecxhub-Weather-App" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-solid fa-cloud-sun"></i> Weather App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 15: Notes App -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="react.js">
+                    <img src="images/notes-app.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Notes App</div>
+                                <div class="text-yellow-400 text-sm">React.js </div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: React.js <br>
+                            Outcome: Simple notes application with create, edit, and delete functionality.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/Syntecxhub-Notes-App" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-stack-exchange"></i> Notes App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 16: User Management App -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="node.js">
+                    <img src="images/user-management-app.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">User Management App</div>
+                                <div class="text-yellow-400 text-sm">Node.js </div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: Node.js <br>
+                            Outcome: Simple user management application with create, edit, and delete functionality.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/Syntecxhub-User-Management-System" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-grav"></i> User Management App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 17: Invoice Maker Mobile App -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="react native">
+                    <img src="images/invoice-maker.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Invoice Maker Mobile App</div>
+                                <div class="text-yellow-400 text-sm">React Native </div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: React Native <br>
+                            Outcome: Simple invoice creation and management application for mobile devices.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://comfy-dusk-ca6f8c.netlify.app/" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-solid fa-file-invoice"></i> Invoice Maker Mobile App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 18: Task Management App -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="node.js">
+                    <img src="images/task-manager.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Task Management App</div>
+                                <div class="text-yellow-400 text-sm">Node.js </div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: Node.js <br>
+                            Outcome: Simple task management application with create, edit, and delete functionality.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/Syntecxhub-Task-Manager" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-solid fa-list-check"></i> Task Management App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 19: E-Commerce Store -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="node.js">
+                    <img src="images/e-commerce-store.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">E-Commerce Store</div>
+                                <div class="text-yellow-400 text-sm">Node.js </div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: Node.js <br>
+                            Outcome: E-Commerce Store in which user can sell products and buy different items.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/Syntecxhub-E-commerce-store" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-brands fa-amazon-pay"></i> E-Commerce Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Project 20: Gym Website -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="html">
+                    <img src="images/gym-website.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Gym Website</div>
+                                <div class="text-yellow-400 text-sm">HTML/CSS/JavaScript Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: HTML/CSS/JavaScript<br>
+                            Outcome: Complete interactive gym website with class schedules and trainer information.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://uzairbaig991.github.io/Gym-Website/" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-solid fa-dumbbell"></i> Gym Website
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Project 21: Animal Charity Website -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="html">
+                    <img src="images/animal-charity.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Animal Charity Website</div>
+                                <div class="text-yellow-400 text-sm">HTML/CSS/JavaScript Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: HTML/CSS/JavaScript<br>
+                            Outcome: Complete interactive animal charity website with donation options and volunteer opportunities.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://uzairbaig991.github.io/RecuPaws/" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-solid fa-cat"></i> Animal Charity Website
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Project 22: Time Zone Converter App -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="html">
+                    <img src="images/time-zone.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl"> Time Zone Converter App</div>
+                                <div class="text-yellow-400 text-sm">HTML/CSS/JavaScript Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: HTML/CSS/JavaScript<br>
+                            Outcome: Complete interactive time zone converter app with current time and time zone conversion features.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://uzairbaig991.github.io/Time-Zone-Converter/" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-solid fa-clock"></i> Time Zone Converter App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Project 23: Recipe Finder App -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="flutter">
+                    <img src="images/recipe-finder.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl"> Recipe Finder App</div>
+                                <div class="text-yellow-400 text-sm">Flutter Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: Flutter<br>
+                            Outcome: Complete Recipe Finder App in which user can make the recipe and search the recipes, also user can use the AI to generate the recipes.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/Recipe-Finder" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-solid fa-bowl-food"></i> Recipe Finder App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Project 24: E-Commerce Android App -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="kotlin">
+                    <img src="images/uzair-mart.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl"> E-Commerce Android App</div>
+                                <div class="text-yellow-400 text-sm">Kotlin Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: Kotlin<br>
+                            Outcome: Complete interactive e-commerce app for Android with product browsing, shopping cart, and checkout features.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/UzairMart" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-solid fa-shopping-cart"></i> E-Commerce Android App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Project 25: Crypto Currency Android App -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="kotlin">
+                    <img src="images/crypto-currency.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl"> Crypto Currency Android App</div>
+                                <div class="text-yellow-400 text-sm">Kotlin Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: Kotlin<br>
+                            Outcome: Complete interactive crypto currency app for Android with real-time price tracking and portfolio management features.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/Crypto-Currency" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-solid fa-coins"></i> Crypto Currency Android App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Project 26: Movie Recommendation System -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="node.js">
+                    <img src="images/movie-recommendation.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Movie Recommendation System</div>
+                                <div class="text-yellow-400 text-sm">Node.js Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: Node.js<br>
+                            Outcome: Complete interactive movie recommendation system with personalized suggestions and user reviews.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/Movie-Recommendation-System" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-solid fa-film"></i> Movie Recommendation System
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Project 27: Quiz Android App -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="kotlin">
+                    <img src="images/quiz-app.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Quiz Android App</div>
+                                <div class="text-yellow-400 text-sm">Kotlin Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: Kotlin<br>
+                            Outcome: Complete interactive quiz application for Android with personalized question recommendations and user progress tracking.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/Quiz-Android-App" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-solid fa-question-circle"></i> Quiz Android App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Project 28: Camping and Outdoor Adventure App -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="html">
+                    <img src="images/camping-app.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Camping and Outdoor Adventure App</div>
+                                <div class="text-yellow-400 text-sm">HTML/CSS/Javascript Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: HTML/CSS/Javascript<br>
+                            Outcome: Complete interactive camping and outdoor adventure application with location-based features and user-generated content.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://uzairbaig991.github.io/Camping-and-Outdoor-Adventure-Planner/" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-solid fa-campground"></i> Camping and Outdoor Adventure App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Project 29: Pharmacy Android App -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="kotlin">
+                    <img src="images/pharmacy-app.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Pharmacy Android App</div>
+                                <div class="text-yellow-400 text-sm">Kotlin Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: Kotlin<br>
+                            Outcome: Complete interactive pharmacy application with location-based features and user-generated content.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/MediCare-" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-solid fa-capsules"></i> Pharmacy Android App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Project 30: ERP System -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="node.js">
+                    <img src="images/ERP-System.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">ERP System</div>
+                                <div class="text-yellow-400 text-sm">Node.js Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: Node.js Project<br>
+                            Outcome: Complete Interactive Enterprise Level ERP System in which the user can run any task freely and free of cost.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://github.com/UzairBaig991/Enterprise-Flow-ERP" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-solid fa-gears"></i> ERP System
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Project 31: Typing Application -->
+                <div class="project-card bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden" data-category="html">
+                    <img src="images/Typing-application.jpeg" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="font-semibold text-2xl">Typing Application</div>
+                                <div class="text-yellow-400 text-sm">HTML/CSS/Javascript Project</div>
+                            </div>
+                            <div class="text-xs bg-zinc-800 px-3 py-1 rounded-full">2026</div>
+                        </div>
+                        <p class="text-zinc-400 mt-5 line-clamp-4">
+                            Role: Solo Developer<br>
+                            Tech: HTML/CSS/Javascript Project<br>
+                            Outcome: Complete Interactive Typing Application in which the beginners can improve their typing speed and accuracy.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <a href="https://uzairbaig991.github.io/Type-Forge/" target="_blank" 
+                               class="flex-1 text-center border border-zinc-700 py-4 rounded-2xl hover:border-yellow-400 transition-colors">
+                                <i class="fa-solid fa-computer"></i> Typing Application
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="py-28 bg-zinc-950 fade-in">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <div class="uppercase text-yellow-400 text-sm tracking-[4px]">CHAPTER 03 — EXPERTISE</div>
+                <h2 class="text-5xl font-bold tracking-tighter">Skills &amp; Tools</h2>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="bg-zinc-900 p-8 rounded-3xl text-center hover:bg-zinc-800 transition-colors">
+                    <i class="fa-brands fa-cuttlefish text-6xl text-blue-400 mb-6"></i>
+                    <div class="font-semibold text-xl">C++</div>
+                </div>
+                <div class="bg-zinc-900 p-8 rounded-3xl text-center hover:bg-zinc-800 transition-colors">
+                    <i class="fa-brands fa-python text-6xl text-yellow-400 mb-6"></i>
+                    <div class="font-semibold text-xl">Python</div>
+                </div>
+                <div class="bg-zinc-900 p-8 rounded-3xl text-center hover:bg-zinc-800 transition-colors">
+                    <i class="fa-solid fa-diagram-project text-6xl text-purple-400 mb-6"></i>
+                    <div class="font-semibold text-xl">OOP Concepts</div>
+                </div>
+                <div class="bg-zinc-900 p-8 rounded-3xl text-center hover:bg-zinc-800 transition-colors">
+                    <i class="fa-solid fa-route text-6xl text-green-400 mb-6"></i>
+                    <div class="font-semibold text-xl">DSA &amp; Algorithms</div>
+                </div>
+                <div class="bg-zinc-900 p-8 rounded-3xl text-center hover:bg-zinc-800 transition-colors">
+                    <i class="fa-solid fa-database text-6xl text-red-400 mb-6"></i>
+                    <div class="font-semibold text-xl">Database Management System</div>
+                </div>
+                <div class="bg-zinc-900 p-8 rounded-3xl text-center hover:bg-zinc-800 transition-colors">
+                    <i class="fa-solid fa-arrows-to-dot text-6xl text-orange-400 mb-6"></i>
+                    <div class="font-semibold text-xl">Assembly Language</div>
+                </div>
+                <div class="bg-zinc-900 p-8 rounded-3xl text-center hover:bg-zinc-800 transition-colors">
+                    <i class="fa-solid fa-mobile-screen-button text-6xl text-gray-400 mb-6"></i>
+                    <div class="font-semibold text-xl">App Development</div>
+                </div>
+                <div class="bg-zinc-900 p-8 rounded-3xl text-center hover:bg-zinc-800 transition-colors">
+                    <i class="fa-solid fa-code text-6xl text-indigo-400 mb-6"></i>
+                    <div class="font-semibold text-xl">Web Development</div>
+                </div>
+                <div class="bg-zinc-900 p-8 rounded-3xl text-center hover:bg-zinc-800 transition-colors">
+                    <i class="fa-solid fa-file-code text-6xl text-pink-400 mb-6"></i>
+                    <div class="font-semibold text-xl">HTML, CSS, Javascript</div>
+                </div>
+                <div class="bg-zinc-900 p-8 rounded-3xl text-center hover:bg-zinc-800 transition-colors">
+                    <i class="fa-solid fa-file-contract text-6xl text-sky-400 mb-6"></i>
+                    <div class="font-semibold text-xl">React.js</div>
+                </div>
+                <div class="bg-zinc-900 p-8 rounded-3xl text-center hover:bg-zinc-800 transition-colors">
+                    <i class="fa-brands fa-react text-6xl text-crimson-400 mb-6"></i>
+                    <div class="font-semibold text-xl">React Native</div>
+                </div>
+                <div class="bg-zinc-900 p-8 rounded-3xl text-center hover:bg-zinc-800 transition-colors">
+                    <i class="fa-brands fa-flutter text-6xl text-blue-400 mb-6"></i>
+                    <div class="font-semibold text-xl">Flutter</div>
+                </div>
+                 <div class="bg-zinc-900 p-8 rounded-3xl text-center hover:bg-zinc-800 transition-colors">
+                    <i class="fa-solid fa-laptop-code text-6xl text-teal-400 mb-6"></i>
+                    <div class="font-semibold text-xl">Kotlin</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="py-28 bg-zinc-900 fade-in">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="uppercase text-yellow-400 text-sm tracking-[4px]">
+            CHAPTER 04 — JOURNEY
+        </div>
+
+        <h2 class="text-5xl font-bold tracking-tighter mb-16">Experience</h2>
+
+        <ul class="max-w-4xl mx-auto text-zinc-400 text-lg space-y-4 list-disc list-inside">
+            <li>
+                Software Engineering student with hands-on experience in developing console-based
+                and algorithm-driven applications as part of academic coursework.
+            </li>
+            <li>
+                Gained strong practical exposure to object-oriented programming, data structures,
+                and problem-solving through multiple individual projects.
+            </li>
+            <li>
+                Developed a Student Management System in C++ with efficient record handling
+                and basic file operations.
+            </li>
+            <li>
+                Built a Music Playlist Manager in C++ using object-oriented programming
+                concepts for dynamic playlist management.
+            </li>
+            <li>
+                Created a Banking System application in Python simulating real-world banking
+                operations such as account management and transactions.
+            </li>
+            <li>
+                Implemented a Maze Solver using DFS and BFS algorithms in Python to strengthen
+                understanding of graph traversal and algorithmic efficiency.
+            </li>
+            <li>
+                Designed a web-based Invoice Management System named <strong>Astraledger</strong>,
+                enabling shop owners to manage invoices, generate GST, service, and non-GST bills.
+            </li>
+            <li>
+                Implemented a Restaurant Management System using Assembly language,
+                focusing on low-level logic and control flow.
+            </li>
+            <li>
+                Actively used Git and GitHub for version control, collaboration, and project
+                management throughout academic projects.
+            </li>
+             <li>
+                I have 2 Months experience in Web Development and App Development, where i have 
+                worked on multiple projects using React.js, React Native, Flutter, and Node.js.
+            </li>
+        </ul>
+    </div>
+</section>
+
+    <!-- BLOG -->
+    <section id="blogs" class="py-28 bg-zinc-950 fade-in">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="uppercase text-yellow-400 text-sm tracking-[4px]">
+            CHAPTER 05 — INSIGHTS
+        </div>
+
+        <h2 class="text-5xl font-bold tracking-tighter mb-16">
+            Blogs & Articles
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-8 text-zinc-400 text-lg">
+            <div class="p-6 border border-zinc-800 rounded-xl hover:border-yellow-400 transition">
+                <h3 class="text-2xl font-semibold text-white mb-3">
+                    Understanding Object-Oriented Programming Through Real Projects
+                </h3>
+                <p>
+                    An article explaining how OOP concepts such as classes, objects, inheritance,
+                    and encapsulation were applied while building projects like a Student Management
+                    System and Music Playlist Manager using C++.
+                </p>
+            </div>
+
+            <div class="p-6 border border-zinc-800 rounded-xl hover:border-yellow-400 transition">
+                <h3 class="text-2xl font-semibold text-white mb-3">
+                    Learning Data Structures by Solving a Maze
+                </h3>
+                <p>
+                    A practical explanation of how DFS and BFS algorithms work, demonstrated
+                    through a Python-based Maze Solver project and how graph traversal improves
+                    problem-solving skills.
+                </p>
+            </div>
+
+            <div class="p-6 border border-zinc-800 rounded-xl hover:border-yellow-400 transition">
+                <h3 class="text-2xl font-semibold text-white mb-3">
+                    Building Console Applications to Strengthen Programming Logic
+                </h3>
+                <p>
+                    Discusses the importance of console-based applications in developing strong
+                    logical thinking, focusing on projects like Banking Systems and record
+                    management software.
+                </p>
+            </div>
+
+            <div class="p-6 border border-zinc-800 rounded-xl hover:border-yellow-400 transition">
+                <h3 class="text-2xl font-semibold text-white mb-3">
+                    From Low-Level to High-Level Programming: My Journey with Assembly
+                </h3>
+                <p>
+                    A learning-focused article describing the experience of implementing a
+                    Restaurant Management System in Assembly language and understanding
+                    low-level control flow and memory concepts.
+                </p>
+            </div>
+
+            <div class="p-6 border border-zinc-800 rounded-xl hover:border-yellow-400 transition">
+                <h3 class="text-2xl font-semibold text-white mb-3">
+                    Designing a Simple Invoice System for Small Businesses
+                </h3>
+                <p>
+                    Explains the motivation and development process behind creating a web-based
+                    invoice management application that supports GST, service, and non-GST billing
+                    for shop owners.
+                </p>
+            </div>
+
+            <div class="p-6 border border-zinc-800 rounded-xl hover:border-yellow-400 transition">
+                <h3 class="text-2xl font-semibold text-white mb-3">
+                    Why Git and GitHub Are Essential for Software Engineering Students
+                </h3>
+                <p>
+                    Covers how version control improves project organization, collaboration,
+                    and code safety, based on hands-on academic project experience.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- ACHIEVEMENTS -->
+    <section id="achievements" class="py-28 bg-zinc-900 fade-in">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="uppercase text-yellow-400 text-sm tracking-[4px]">
+            CHAPTER 06 — MILESTONES
+        </div>
+
+        <h2 class="text-5xl font-bold tracking-tighter mb-16">
+            Achievements
+        </h2>
+
+        <ul class="max-w-4xl mx-auto text-zinc-400 text-lg space-y-4 list-disc list-inside">
+            <li>
+                Successfully completed multiple academic software projects using C++, Python,
+                and Assembly language, demonstrating strong problem-solving and programming skills.
+            </li>
+            <li>
+                Designed and implemented a functional web-based invoice management application
+                to solve a real-world billing need for a small business.
+            </li>
+            <li>
+                Earned the CPA: Programming Essentials in C++ certification, validating core
+                programming and object-oriented concepts.
+            </li>
+        </ul>
+    </div>
+</section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="py-28 bg-zinc-950">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-20">
+            <div>
+                <h2 class="text-5xl font-bold tracking-tighter">Let's Talk</h2>
+                <form id="contact-form" class="mt-12 space-y-8">
+                    <input type="text" id="name" placeholder="Your Name" required class="input-focus w-full bg-transparent border border-zinc-700 rounded-3xl px-8 py-7 text-lg">
+                    <input type="email" id="email" placeholder="you@email.com" required class="input-focus w-full bg-transparent border border-zinc-700 rounded-3xl px-8 py-7 text-lg">
+                    <textarea id="message" rows="6" placeholder="Your message..." required class="input-focus w-full bg-transparent border border-zinc-700 rounded-3xl px-8 py-7 text-lg"></textarea>
+                    <button type="submit" class="w-full bg-yellow-400 text-zinc-950 py-7 rounded-3xl font-semibold text-xl">Send Message</button>
+                </form>
+            </div>
+            
+            <div class="space-y-12 pt-12">
+                <div class="flex gap-6 items-start">
+                    <i class="fa-solid fa-envelope text-4xl text-yellow-400"></i>
+                    <div>
+                        <p class="text-zinc-400 text-sm">EMAIL</p>
+                        <a href="mailto:baiguzair53@gmail.com" class="text-2xl hover:text-yellow-400">baiguzair53@gmail.com</a>
+                    </div>
+                </div>
+                <div class="flex gap-6 items-start">
+                    <i class="fa-solid fa-phone text-4xl text-yellow-400"></i>
+                    <div>
+                        <p class="text-zinc-400 text-sm">PHONE</p>
+                        <a href="tel:+92 314 5487196" class="text-2xl hover:text-yellow-400">+92 314 5487196</a>
+                    </div>
+                </div>
+                
+                <div>
+                    <p class="text-zinc-400 text-sm mb-4">CONNECT WITH ME</p>
+                    <div class="flex gap-8 text-4xl">
+                        <a href="https://github.com/UzairBaig991" target="_blank" class="hover:text-yellow-400"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/uzair-baig-b502ab2a5/" target="_blank" class="hover:text-yellow-400"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=100089754206976" target="_blank" class="hover:text-yellow-400"><i class="fa-brands fa-facebook"></i></a>
+                    </div>
+                </div>
+                
+                <a href="Uzair-Baig-CV.pdf" download 
+                   class="inline-flex items-center gap-4 border border-dashed border-yellow-400 hover:bg-yellow-400 hover:text-zinc-950 px-10 py-6 rounded-3xl text-lg font-medium">
+                    <i class="fa-solid fa-download text-2xl"></i>
+                    Download Resume
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 text-center text-zinc-500 text-sm border-t border-zinc-800">
+        © 2026 Uzair Baig • Made with ❤️ using HTML, CSS &amp; JavaScript
+    </footer>
+
+    <script>
+        // Mobile Menu
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+            const icon = document.getElementById('mobile-menu-btn').querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-xmark');
+        });
+
+        // Close mobile menu when clicking links
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+
+        // Project Filter
+        function filterProjects(category) {
+            document.querySelectorAll('#project-filters button').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = Array.from(document.querySelectorAll('#project-filters button')).find(b => 
+                (category === 'all' && b.textContent === 'All') ||
+                (category === 'cpp' && b.textContent === 'C++') ||
+                (category === 'python' && b.textContent === 'Python') ||
+                (category === 'dsa' && b.textContent === 'DSA')
+            );
+            if (activeBtn) activeBtn.classList.add('active');
+
+            document.querySelectorAll('#projects-grid > div').forEach(card => {
+                card.style.display = (category === 'all' || card.dataset.category === category) ? 'block' : 'none';
+            });
+        }
+
+        // Contact Form
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you! Your message has been received. I will reply soon 🚀');
+            this.reset();
+        });
+
+        // Fade-in animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.fade-in').forEach(section => observer.observe(section));
+
+        // Active navbar link on scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            document.querySelectorAll('section[id]').forEach(section => {
+                if (scrollY >= section.offsetTop - 150) current = section.getAttribute('id');
+            });
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        console.log('%c✅ Portfolio loaded with your real pictures and projects!\nReplace email/phone in contact section and resume.pdf with your own.', 'color:#eab308; font-size:14px');
+    </script>
+</body>
+</html>
