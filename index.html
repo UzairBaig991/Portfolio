@@ -15,9 +15,29 @@
         .logo-font { font-family: 'Space Grotesk', sans-serif; }
 
         .hero-bg {
+            isolation: isolate;
+            overflow: hidden;
             background: linear-gradient(-45deg, #0a0a0a, #1f2937, #312e81, #1e3a8a);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
+        }
+        .hero-bg::before,
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+        .hero-bg::before {
+            z-index: 1;
+            opacity: 0.2;
+            background-image: linear-gradient(rgb(255 255 255 / 0.08) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / 0.08) 1px, transparent 1px);
+            background-size: 72px 72px;
+            mask-image: linear-gradient(to bottom, black, transparent 90%);
+        }
+        .hero-bg::after {
+            z-index: 2;
+            background: radial-gradient(ellipse at 50% 50%, transparent 20%, rgb(5 5 8 / 0.5) 100%);
         }
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
@@ -26,13 +46,146 @@
         }
 
         .glow-text { text-shadow: 0 0 20px rgb(234 179 8), 0 0 40px rgb(234 179 8); }
-        
+
+        #scroll-progress {
+            position: fixed;
+            inset: 0 auto auto 0;
+            z-index: 60;
+            width: 100%;
+            height: 3px;
+            pointer-events: none;
+        }
+        #scroll-progress span {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #eab308, #fb923c, #fde68a);
+            transform: scaleX(0);
+            transform-origin: left;
+            box-shadow: 0 0 16px rgb(234 179 8 / 0.7);
+        }
+
+        #cinematic-canvas {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .hero-ambient {
+            position: absolute;
+            z-index: 0;
+            width: min(52vw, 680px);
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgb(234 179 8 / 0.13), rgb(99 102 241 / 0.08) 38%, transparent 70%);
+            filter: blur(20px);
+            animation: ambientDrift 12s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        @keyframes ambientDrift {
+            from { transform: translate3d(-4%, 2%, 0) scale(0.94); }
+            to { transform: translate3d(5%, -3%, 0) scale(1.08); }
+        }
+        .hero-copy > * {
+            animation: heroRise 0.8s both;
+        }
+        .hero-copy > *:nth-child(2) { animation-delay: 0.1s; }
+        .hero-copy > *:nth-child(3) { animation-delay: 0.18s; }
+        .hero-copy > *:nth-child(4) { animation-delay: 0.26s; }
+        .hero-copy > *:nth-child(5) { animation-delay: 0.34s; }
+        .hero-copy > *:nth-child(6) { animation-delay: 0.42s; }
+        @keyframes heroRise {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-visual {
+            position: relative;
+            display: grid;
+            place-items: center;
+            perspective: 1000px;
+        }
+        .hero-portrait-frame {
+            position: relative;
+            z-index: 1;
+            padding: 2px;
+            border-radius: 2rem;
+            background: conic-gradient(from var(--frame-angle, 0deg), rgb(234 179 8 / 0.2), #fde68a, rgb(99 102 241 / 0.75), rgb(234 179 8 / 0.2));
+            box-shadow: 0 30px 100px rgb(0 0 0 / 0.45), 0 0 70px rgb(234 179 8 / 0.13);
+            transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+            transition: transform 0.25s ease-out;
+            animation: portraitEnter 1s 0.22s both;
+        }
+        @keyframes portraitEnter {
+            from { opacity: 0; filter: blur(8px); }
+            to { opacity: 1; filter: blur(0); }
+        }
+        .hero-portrait-image {
+            display: block;
+            width: min(72vw, 420px);
+            height: min(72vw, 420px);
+            border: 6px solid rgb(9 9 11 / 0.92);
+            border-radius: calc(2rem - 2px);
+            object-fit: cover;
+        }
+        .portrait-orbit {
+            position: absolute;
+            width: min(88vw, 520px);
+            aspect-ratio: 1;
+            border: 1px solid rgb(255 255 255 / 0.16);
+            border-radius: 50%;
+            transform: rotate(-24deg) scaleY(0.42);
+            animation: orbitSpin 18s linear infinite;
+        }
+        .portrait-orbit::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 6%;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #fde68a;
+            box-shadow: 0 0 20px #eab308;
+        }
+        @keyframes orbitSpin { to { rotate: 360deg; } }
+        .portrait-label {
+            position: absolute;
+            z-index: 2;
+            right: -1rem;
+            bottom: 1.5rem;
+            padding: 0.85rem 1rem;
+            border: 1px solid rgb(255 255 255 / 0.16);
+            border-radius: 1rem;
+            background: rgb(9 9 11 / 0.78);
+            box-shadow: 0 12px 32px rgb(0 0 0 / 0.25);
+            backdrop-filter: blur(16px);
+        }
+        .cinematic-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            border: 1px solid rgb(255 255 255 / 0.14);
+            background: rgb(255 255 255 / 0.06);
+            box-shadow: inset 0 1px rgb(255 255 255 / 0.08);
+        }
+
         .project-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.35s ease, box-shadow 0.35s ease;
         }
         .project-card:hover {
-            transform: translateY(-15px) scale(1.04);
-            box-shadow: 0 30px 60px -15px rgb(234 179 8 / 0.2);
+            transform: translateY(-8px);
+            border-color: rgb(234 179 8 / 0.55);
+            box-shadow: 0 30px 60px -25px rgb(234 179 8 / 0.32);
+        }
+        .project-card img {
+            transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.5s ease;
+        }
+        .project-card:hover img {
+            transform: scale(1.045);
+            filter: saturate(1.12);
         }
 
         .filter-btn.active {
@@ -73,20 +226,55 @@
             box-shadow: 0 0 0 5px rgba(234, 179, 8, 0.3);
             transform: translateY(-3px);
         }
+
+        .motion-ready {
+            opacity: 0;
+            transform: translateY(28px) scale(0.985);
+            transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition-delay: var(--reveal-delay, 0ms);
+        }
+        .motion-ready.motion-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        @media (max-width: 767px) {
+            .hero-bg::before { background-size: 48px 48px; }
+            .portrait-label { right: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .fade-in,
+            .motion-ready {
+                opacity: 1;
+                transform: none;
+            }
+            .project-card:hover,
+            .project-card:hover img {
+                transform: none;
+            }
+        }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200 overflow-x-hidden">
+    <div id="scroll-progress" aria-hidden="true"><span></span></div>
 
     <!-- NAVBAR -->
     <nav id="navbar" class="bg-zinc-950/95 backdrop-blur-xl fixed top-0 left-0 right-0 z-50 border-b border-zinc-800">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-3">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#" class="flex shrink-0 items-center gap-3">
                 <div class="w-10 h-10 bg-yellow-400 rounded-3xl flex items-center justify-center text-zinc-950 font-bold text-4xl logo-font">U</div>
-                <span class="text-3xl font-bold tracking-tighter logo-font text-white">Uzair Baig</span>
+                <span class="whitespace-nowrap text-2xl font-bold tracking-tighter logo-font text-white">Uzair Baig</span>
             </a>
 
             <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center gap-10 text-base font-medium">
+            <div class="hidden md:flex items-center gap-5 lg:gap-7 text-sm lg:text-base font-medium">
                 <a href="#about" class="nav-link text-zinc-300 hover:text-white transition-colors">About</a>
                 <a href="#projects" class="nav-link text-zinc-300 hover:text-white transition-colors">Projects</a>
                 <a href="#skills" class="nav-link text-zinc-300 hover:text-white transition-colors">Skills</a>
@@ -97,12 +285,12 @@
             </div>
 
             <a href="Uzair-Baig-CV.pdf" download 
-               class="hidden md:flex items-center gap-3 bg-yellow-400 hover:bg-amber-300 text-zinc-950 px-7 py-3.5 rounded-3xl font-semibold transition-all">
+               class="hidden md:flex shrink-0 items-center gap-3 bg-yellow-400 hover:bg-amber-300 text-zinc-950 px-5 py-3 rounded-3xl font-semibold transition-all">
                 <i class="fa-solid fa-download"></i> Resume
             </a>
 
             <!-- Mobile Hamburger -->
-            <button id="mobile-menu-btn" class="md:hidden text-3xl text-yellow-400">
+            <button id="mobile-menu-btn" type="button" aria-label="Open navigation menu" aria-expanded="false" class="md:hidden text-3xl text-yellow-400">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
@@ -126,9 +314,11 @@
 
     <!-- HERO SECTION -->
     <section id="hero" class="hero-bg min-h-screen flex items-center relative">
-        <div class="max-w-7xl mx-auto px-6 pt-20 md:pt-0 grid md:grid-cols-2 gap-12 items-center h-screen relative z-10">
-            <div class="space-y-8">
-                <div class="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md px-8 py-4 rounded-3xl text-sm font-medium">
+        <canvas id="cinematic-canvas" aria-hidden="true"></canvas>
+        <div class="hero-ambient" style="top: 8%; left: 18%;" aria-hidden="true"></div>
+        <div class="max-w-7xl mx-auto px-6 py-28 md:py-32 grid md:grid-cols-2 gap-12 items-center min-h-screen relative z-10">
+            <div class="hero-copy space-y-8">
+                <div class="cinematic-kicker px-6 py-3 rounded-full text-sm font-medium">
                     <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
                     BS Software Engineering Student
                 </div>
@@ -163,10 +353,20 @@
             </div>
 
             <!-- Your Personal Picture -->
-            <div class="flex justify-center">
-                <img src="images/my-picture-3.jpg" 
-                     alt="Uzair Baig" 
-                     class="w-80 h-80 md:w-[420px] md:h-[420px] object-cover rounded-3xl border-8 border-yellow-400/30 shadow-2xl transition-all hover:rotate-3">
+            <div class="hero-visual" data-tilt>
+                <div class="portrait-orbit" aria-hidden="true"></div>
+                <div class="hero-portrait-frame">
+                    <img src="images/my-picture-3.jpg"
+                         alt="Uzair Baig"
+                         class="hero-portrait-image">
+                </div>
+                <div class="portrait-label text-left">
+                    <div class="text-[10px] uppercase tracking-[0.25em] text-zinc-400">Currently building</div>
+                    <div class="mt-1 flex items-center gap-2 text-sm font-semibold text-white">
+                        <span class="h-2 w-2 rounded-full bg-yellow-400"></span>
+                        Thoughtful digital experiences
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1324,12 +1524,19 @@
             const icon = document.getElementById('mobile-menu-btn').querySelector('i');
             icon.classList.toggle('fa-bars');
             icon.classList.toggle('fa-xmark');
+            const isExpanded = !menu.classList.contains('hidden');
+            document.getElementById('mobile-menu-btn').setAttribute('aria-expanded', String(isExpanded));
+            document.getElementById('mobile-menu-btn').setAttribute('aria-label', isExpanded ? 'Close navigation menu' : 'Open navigation menu');
         });
 
         // Close mobile menu when clicking links
         document.querySelectorAll('.mobile-nav-link').forEach(link => {
             link.addEventListener('click', () => {
                 document.getElementById('mobile-menu').classList.add('hidden');
+                const menuButton = document.getElementById('mobile-menu-btn');
+                menuButton.querySelector('i').classList.replace('fa-xmark', 'fa-bars');
+                menuButton.setAttribute('aria-expanded', 'false');
+                menuButton.setAttribute('aria-label', 'Open navigation menu');
             });
         });
 
@@ -1356,36 +1563,169 @@
             this.reset();
         });
 
-        // Fade-in animation
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
+        // Reveal content as it enters the viewport.
+        const revealTargets = document.querySelectorAll(
+            '.project-card, #skills .grid > div, #blogs .grid > div, #achievements .grid > div'
+        );
+        if ('IntersectionObserver' in window) {
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('visible', 'motion-visible');
+                    observer.unobserve(entry.target);
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -32px 0px' });
+
+            document.querySelectorAll('.fade-in').forEach(section => revealObserver.observe(section));
+            revealTargets.forEach((element, index) => {
+                element.classList.add('motion-ready');
+                element.style.setProperty('--reveal-delay', `${(index % 3) * 90}ms`);
+                revealObserver.observe(element);
             });
-        }, { threshold: 0.15 });
+        } else {
+            document.querySelectorAll('.fade-in').forEach(section => section.classList.add('visible'));
+        }
 
-        document.querySelectorAll('.fade-in').forEach(section => observer.observe(section));
+        // Keep the reading progress and active section indicator in sync.
+        const progressBar = document.querySelector('#scroll-progress span');
+        let scrollUpdateQueued = false;
+        const updateScrollState = () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = scrollableHeight > 0 ? window.scrollY / scrollableHeight : 0;
+            progressBar.style.transform = `scaleX(${Math.min(1, Math.max(0, progress))})`;
 
-        // Active navbar link on scroll
-        window.addEventListener('scroll', () => {
             let current = '';
             document.querySelectorAll('section[id]').forEach(section => {
-                if (scrollY >= section.offsetTop - 150) current = section.getAttribute('id');
+                if (window.scrollY >= section.offsetTop - 150) current = section.getAttribute('id');
             });
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
             });
-        });
+            scrollUpdateQueued = false;
+        };
+        window.addEventListener('scroll', () => {
+            if (scrollUpdateQueued) return;
+            scrollUpdateQueued = true;
+            window.requestAnimationFrame(updateScrollState);
+        }, { passive: true });
+        updateScrollState();
 
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 if (this.getAttribute('href') !== '#') {
                     e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior });
                 }
             });
         });
+
+        // Draw a lightweight ambient particle field in the hero.
+        const canvas = document.getElementById('cinematic-canvas');
+        const context = canvas.getContext('2d');
+        const hero = document.getElementById('hero');
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let particles = [];
+        let canvasWidth = 0;
+        let canvasHeight = 0;
+        let animationFrame = 0;
+        let pointer = { x: -1000, y: -1000 };
+
+        const drawParticles = (animate) => {
+            if (!context) return;
+            context.clearRect(0, 0, canvasWidth, canvasHeight);
+            particles.forEach((particle, index) => {
+                if (animate) {
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+                    if (particle.x < 0 || particle.x > canvasWidth) particle.vx *= -1;
+                    if (particle.y < 0 || particle.y > canvasHeight) particle.vy *= -1;
+                }
+
+                for (let nextIndex = index + 1; nextIndex < particles.length; nextIndex += 1) {
+                    const next = particles[nextIndex];
+                    const distance = Math.hypot(particle.x - next.x, particle.y - next.y);
+                    if (distance < 135) {
+                        context.beginPath();
+                        context.moveTo(particle.x, particle.y);
+                        context.lineTo(next.x, next.y);
+                        context.strokeStyle = `rgba(226, 190, 92, ${(1 - distance / 135) * 0.16})`;
+                        context.lineWidth = 1;
+                        context.stroke();
+                    }
+                }
+
+                const pointerDistance = Math.hypot(particle.x - pointer.x, particle.y - pointer.y);
+                if (pointerDistance < 150) {
+                    context.beginPath();
+                    context.moveTo(particle.x, particle.y);
+                    context.lineTo(pointer.x, pointer.y);
+                    context.strokeStyle = `rgba(253, 230, 138, ${(1 - pointerDistance / 150) * 0.22})`;
+                    context.stroke();
+                }
+
+                context.beginPath();
+                context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                context.fillStyle = 'rgba(255, 236, 179, 0.55)';
+                context.fill();
+            });
+
+            if (animate && !document.hidden) animationFrame = window.requestAnimationFrame(() => drawParticles(true));
+        };
+
+        const resizeCanvas = () => {
+            const bounds = hero.getBoundingClientRect();
+            const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+            canvasWidth = bounds.width;
+            canvasHeight = bounds.height;
+            canvas.width = Math.round(canvasWidth * pixelRatio);
+            canvas.height = Math.round(canvasHeight * pixelRatio);
+            context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+            const particleCount = Math.min(72, Math.max(28, Math.floor((canvasWidth * canvasHeight) / 18000)));
+            particles = Array.from({ length: particleCount }, () => ({
+                x: Math.random() * canvasWidth,
+                y: Math.random() * canvasHeight,
+                vx: (Math.random() - 0.5) * 0.24,
+                vy: (Math.random() - 0.5) * 0.24,
+                radius: Math.random() * 1.5 + 0.6
+            }));
+            window.cancelAnimationFrame(animationFrame);
+            drawParticles(!reducedMotion && !document.hidden);
+        };
+
+        if (context) {
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas, { passive: true });
+            hero.addEventListener('pointermove', event => {
+                const bounds = canvas.getBoundingClientRect();
+                pointer = { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
+            }, { passive: true });
+            hero.addEventListener('pointerleave', () => {
+                pointer = { x: -1000, y: -1000 };
+            });
+            document.addEventListener('visibilitychange', () => {
+                window.cancelAnimationFrame(animationFrame);
+                if (!document.hidden && !reducedMotion) drawParticles(true);
+            });
+        }
+
+        // Add a subtle pointer tilt to the hero portrait on precise-pointer devices.
+        const tiltTarget = document.querySelector('[data-tilt]');
+        if (tiltTarget && window.matchMedia('(pointer: fine)').matches && !reducedMotion) {
+            tiltTarget.addEventListener('pointermove', event => {
+                const bounds = tiltTarget.getBoundingClientRect();
+                const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+                const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+                tiltTarget.style.setProperty('--tilt-x', `${-y * 5}deg`);
+                tiltTarget.style.setProperty('--tilt-y', `${x * 5}deg`);
+            });
+            tiltTarget.addEventListener('pointerleave', () => {
+                tiltTarget.style.setProperty('--tilt-x', '0deg');
+                tiltTarget.style.setProperty('--tilt-y', '0deg');
+            });
+        }
 
         console.log('%c✅ Portfolio loaded with your real pictures and projects!\nReplace email/phone in contact section and resume.pdf with your own.', 'color:#eab308; font-size:14px');
     </script>
