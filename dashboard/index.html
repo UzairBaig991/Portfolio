@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Uzair Baig · Live GitHub Dashboard</title>
+<meta name="description" content="Live, interactive view of Uzair Baig's GitHub activity: contributions, streaks, repositories and recent pushes.">
+<style>
+:root{
+  --bg:#08090f; --card:#0d1117; --card2:#11161d; --line:rgba(54,188,247,.22);
+  --text:#e6edf3; --muted:#8b949e; --cyan:#36BCF7; --violet:#8b5cf6; --pink:#db61a2; --gold:#f7b731; --green:#28c840; --red:#ff7b72;
+  --l0:#161b22; --l1:#164863; --l2:#1f7aa8; --l3:#36BCF7; --l4:#a78bfa;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 "Segoe UI",Roboto,Arial,sans-serif;
+  background-image:radial-gradient(900px 500px at 10% -10%,rgba(54,188,247,.12),transparent 60%),radial-gradient(800px 500px at 100% 0%,rgba(139,92,246,.14),transparent 60%)}
+a{color:var(--cyan);text-decoration:none} a:hover{text-decoration:underline}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 16px 64px}
+header{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;margin-bottom:22px}
+h1{margin:0;font-size:clamp(26px,5vw,40px);font-weight:800;letter-spacing:.5px;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink));background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 6s linear infinite}
+@keyframes flow{to{background-position:200% 0}}
+.sub{color:var(--muted);margin:2px 0 0}
+.live{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);font:600 13px "Consolas","Courier New",monospace;color:var(--text)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(40,200,64,.7);animation:pulse 1.6s infinite}
+.dot.off{background:var(--gold);animation:none}.dot.err{background:var(--red);animation:none}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(40,200,64,0)}100%{box-shadow:0 0 0 0 rgba(40,200,64,0)}}
+button{font:inherit;cursor:pointer;color:var(--text);background:linear-gradient(90deg,var(--cyan),var(--violet));border:0;border-radius:999px;padding:8px 16px;font-weight:700}
+button:hover{filter:brightness(1.12)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:18px}
+.tile{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;overflow:hidden;transition:transform .2s,border-color .2s}
+.tile:hover{transform:translateY(-4px);border-color:var(--cyan)}
+.tile b{display:block;font-size:34px;font-weight:800;line-height:1.1;background:linear-gradient(90deg,var(--c1,var(--cyan)),var(--c2,var(--violet)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tile span{color:var(--muted);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 20px;margin-bottom:18px}
+.card h2{margin:0 0 2px;font-size:19px}
+.card .hint{color:var(--muted);font-size:13px;margin:0 0 12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}}
+.scroll{overflow-x:auto;padding-bottom:6px}
+svg text{font-family:Consolas,"Courier New",monospace}
+.cell{transition:transform .12s,filter .12s;transform-box:fill-box;transform-origin:center;cursor:pointer}
+.cell:hover{transform:scale(1.35);filter:drop-shadow(0 0 5px var(--cyan))}
+.bar{transition:filter .15s,opacity .15s;cursor:pointer}.bar:hover{filter:brightness(1.3) drop-shadow(0 0 8px var(--violet))}
+#tip{position:fixed;z-index:50;pointer-events:none;background:#161b22;border:1px solid var(--cyan);border-radius:10px;padding:8px 12px;font-size:13px;box-shadow:0 8px 30px rgba(0,0,0,.6);opacity:0;transform:translateY(4px);transition:opacity .1s,transform .1s;max-width:280px}
+#tip.on{opacity:1;transform:none}#tip b{color:var(--cyan)}#tip small{color:var(--muted);display:block}
+.legend{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px;justify-content:flex-end;margin-top:6px}
+.legend i{width:13px;height:13px;border-radius:3px;display:inline-block}
+.feed{list-style:none;margin:0;padding:0;max-height:430px;overflow:auto}
+.feed li{display:flex;gap:12px;padding:11px 8px;border-bottom:1px solid rgba(255,255,255,.06);border-radius:10px;transition:background .15s;animation:in .5s}
+.feed li:hover{background:var(--card2)}
+@keyframes in{from{opacity:0;transform:translateX(-10px)}}
+.feed .ic{flex:0 0 34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:17px;background:rgba(54,188,247,.12);border:1px solid var(--line)}
+.feed .t{font-weight:600}.feed .m{color:var(--muted);font-size:13px;word-break:break-word}
+.feed .when{margin-left:auto;color:var(--muted);font:12px Consolas,monospace;white-space:nowrap}
+.new{outline:1px solid var(--gold);background:rgba(247,183,49,.08)!important}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+input,select{background:var(--card2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font:inherit}
+input{flex:1 1 220px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{border:1px solid var(--line);background:var(--card2);color:var(--text);padding:4px 12px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer}
+.chip.on{background:linear-gradient(90deg,var(--cyan),var(--violet));border-color:transparent}
+.repos{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+.repo{background:var(--card2);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:13px 15px;transition:transform .18s,border-color .18s,box-shadow .18s;display:flex;flex-direction:column;gap:6px}
+.repo:hover{transform:translateY(-4px);border-color:var(--cyan);box-shadow:0 10px 30px rgba(54,188,247,.15)}
+.repo a.n{font-weight:700;font-size:15px;word-break:break-all}
+.repo p{margin:0;color:var(--muted);font-size:13px;flex:1}
+.meta{display:flex;gap:12px;align-items:center;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.lang i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.hot{color:var(--gold);font-weight:700}
+.donutwrap{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.legendl{display:grid;gap:6px;flex:1 1 180px}
+.legendl div{display:flex;align-items:center;gap:8px;font-size:13px;padding:3px 8px;border-radius:8px;cursor:default;transition:background .12s}
+.legendl div:hover{background:var(--card2)}.legendl i{width:11px;height:11px;border-radius:50%}.legendl em{margin-left:auto;color:var(--muted);font-style:normal;font-family:Consolas,monospace}
+.note{color:var(--muted);font-size:13px;padding:10px 0}
+.warn{border-color:var(--gold)!important;color:var(--gold)}
+footer{color:var(--muted);text-align:center;font-size:13px;margin-top:30px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Uzair Baig · Live Dashboard</h1>
+      <p class="sub">Real-time view of my GitHub activity. Hover or click anything.</p>
+    </div>
+    <div class="live">
+      <span class="pill"><span class="dot" id="dot"></span><span id="status">Connecting…</span></span>
+      <span class="pill" id="next">–</span>
+      <button id="refresh" type="button">Refresh now</button>
+    </div>
+  </header>
+
+  <section class="tiles" id="tiles" aria-label="Summary"></section>
+
+  <section class="card">
+    <h2>Contribution heatmap</h2>
+    <p class="hint" id="heatHint">Hover a day to see what happened. Click a day to pin it.</p>
+    <div class="scroll"><svg id="heat" role="img" aria-label="Contribution heatmap"></svg></div>
+    <div class="legend">Less <i style="background:var(--l0)"></i><i style="background:var(--l1)"></i><i style="background:var(--l2)"></i><i style="background:var(--l3)"></i><i style="background:var(--l4)"></i> More</div>
+  </section>
+
+  <div class="grid2">
+    <section class="card"><h2>Monthly activity</h2><p class="hint">Contributions per month, last 12 months.</p><svg id="months" width="100%" viewBox="0 0 520 230" role="img" aria-label="Monthly contributions"></svg></section>
+    <section class="card"><h2>Activity by weekday</h2><p class="hint">Which days I ship the most.</p><svg id="weekdays" width="100%" viewBox="0 0 520 230" role="img" aria-label="Contributions by weekday"></svg></section>
+  </div>
+
+  <div class="grid2">
+    <section class="card">
+      <h2>Live activity feed</h2>
+      <p class="hint">Straight from GitHub's public events. New items flash gold.</p>
+      <ul class="feed" id="feed"><li class="note">Loading…</li></ul>
+    </section>
+    <section class="card">
+      <h2>Languages</h2>
+      <p class="hint">Primary language across my public repos. Hover a slice.</p>
+      <div class="donutwrap"><svg id="donut" width="200" height="200" viewBox="0 0 200 200" role="img" aria-label="Languages"></svg><div class="legendl" id="langLegend"></div></div>
+    </section>
+  </div>
+
+  <section class="card">
+    <h2>Repositories</h2>
+    <p class="hint">Sorted live by last push. Search, filter by language, or re-sort.</p>
+    <div class="tools">
+      <input id="q" type="search" placeholder="Search repositories…" aria-label="Search repositories">
+      <select id="sort" aria-label="Sort"><option value="pushed">Recently pushed</option><option value="stars">Most stars</option><option value="name">Name A–Z</option></select>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="repos" id="repos"></div>
+  </section>
+
+  <footer>Data from the GitHub API and a daily-refreshed contribution export. <a href="https://github.com/UzairBaig991">github.com/UzairBaig991</a> · <a href="../">← Back to portfolio</a></footer>
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script>
+(function(){
+'use strict';
+var USER='UzairBaig991', API='https://api.github.com';
+var DATA='https://raw.githubusercontent.com/UzairBaig991/UzairBaig991/main/data/contributions.json';
+var REFRESH=60; // seconds
+var LC={JavaScript:'#f1e05a',TypeScript:'#3178c6',Python:'#3572A5',Java:'#b07219','C++':'#f34b7d',C:'#888',HTML:'#e34c26',CSS:'#563d7c',PHP:'#4F5D95',Kotlin:'#A97BFF',Dart:'#00B4AB','C#':'#178600',Shell:'#89e051',Jupyter:'#DA5B0B','Jupyter Notebook':'#DA5B0B'};
+var $=function(id){return document.getElementById(id)};
+var cache={}, state={repos:[],events:[],lang:'All',seen:null,counts:null,left:REFRESH};
+
+function h(tag,attrs){var e=document.createElement(tag);attrs=attrs||{};
+  for(var k in attrs){if(k==='text')e.textContent=attrs[k];else if(k==='style')e.style.cssText=attrs[k];else e.setAttribute(k,attrs[k]);}
+  for(var i=2;i<arguments.length;i++){var c=arguments[i];if(c!=null)e.appendChild(typeof c==='string'?document.createTextNode(c):c);}return e}
+function S(tag,attrs){var e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(var k in attrs||{})e.setAttribute(k,attrs[k]);return e}
+function clear(n){while(n.firstChild)n.removeChild(n.firstChild)}
+function ago(iso){var s=Math.max(0,(Date.now()-new Date(iso))/1000);
+  if(s<60)return 'just now';var m=s/60;if(m<60)return Math.floor(m)+'m ago';var hr=m/60;if(hr<24)return Math.floor(hr)+'h ago';
+  var d=hr/24;if(d<30)return Math.floor(d)+'d ago';if(d<365)return Math.floor(d/30)+'mo ago';return Math.floor(d/365)+'y ago'}
+function fdate(d){return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'})}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+
+/* ---------- tooltip ---------- */
+var tip=$('tip');
+function showTip(ev,title,lines){clear(tip);tip.appendChild(h('b',{text:title}));(lines||[]).forEach(function(l){tip.appendChild(h('small',{text:l}))});
+  tip.classList.add('on');var x=ev.clientX+14,y=ev.clientY+14,w=tip.offsetWidth,hh=tip.offsetHeight;
+  if(x+w>innerWidth-8)x=ev.clientX-w-14;if(y+hh>innerHeight-8)y=ev.clientY-hh-14;tip.style.left=x+'px';tip.style.top=y+'px'}
+function hideTip(){tip.classList.remove('on')}
+function hover(node,title,lines){node.addEventListener('mousemove',function(e){showTip(e,typeof title==='function'?title():title,typeof lines==='function'?lines():lines)});node.addEventListener('mouseleave',hideTip)}
+
+/* ---------- network (ETag => 304s do not use rate limit) ---------- */
+function getJSON(url,opts){opts=opts||{};var c=cache[url];var hd={'Accept':'application/vnd.github+json'};if(c&&c.etag)hd['If-None-Match']=c.etag;
+  return fetch(url,{headers:opts.raw?{}:hd,cache:opts.raw?'no-store':'default'}).then(function(r){
+    if(r.status===304&&c)return c.data;
+    if(r.status===403||r.status===429){var e=new Error('rate');e.rate=true;e.reset=r.headers.get('x-ratelimit-reset');throw e}
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    var et=r.headers.get('etag');return r.json().then(function(d){if(et)cache[url]={etag:et,data:d};return d})})}
+
+/* ---------- tiles ---------- */
+function tiles(items){var box=$('tiles');clear(box);items.forEach(function(t){
+  var n=h('div',{class:'tile',style:'--c1:'+t[3]+';--c2:'+t[4]},h('b',{text:String(t[1])}),h('span',{text:t[0]}));
+  if(t[2])hover(n,t[0],[t[2]]);box.appendChild(n)})}
+
+/* ---------- contributions ---------- */
+function streakInfo(counts,start,end){var cur=0,best=0,run=0,bs=null,be=null,rs=null,d=new Date(start),total=0,days=[];
+  for(;d<=end;d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1)){days.push(iso(d))}
+  days.forEach(function(k){var c=counts[k]||0;total+=c;if(c>0){if(!run)rs=k;run++;if(run>best){best=run;bs=rs;be=k}}else run=0});
+  var i=days.length-1;if(i>=0&&!(counts[days[i]]>0))i--;var ce=days[i];while(i>=0&&counts[days[i]]>0){cur++;i--}
+  return {total:total,cur:cur,curStart:cur?days[i+1]:null,curEnd:cur?ce:null,best:best,bs:bs,be:be}}
+
+function heat(counts){var svg=$('heat');clear(svg);var today=new Date();today.setHours(0,0,0,0);
+  var start=new Date(today);start.setDate(start.getDate()-start.getDay()-52*7);
+  var cell=14,gap=3,x0=34,y0=22,W=x0+53*(cell+gap)+4,H=y0+7*(cell+gap)+4;svg.setAttribute('viewBox','0 0 '+W+' '+H);svg.setAttribute('width',Math.max(W,720));svg.setAttribute('height',H);
+  var vals=Object.keys(counts).map(function(k){return counts[k]}).filter(function(v){return v>0}).sort(function(a,b){return a-b});
+  var q=function(p){return vals.length?vals[Math.min(vals.length-1,Math.floor(vals.length*p))]:1},t1=q(.4),t2=q(.7),t3=q(.9);
+  var lvl=function(c){return c===0?0:c<=t1?1:c<=t2?2:c<=t3?3:4};
+  [['Mon',1],['Wed',3],['Fri',5]].forEach(function(p){var t=S('text',{x:x0-6,y:y0+p[1]*(cell+gap)+11,'text-anchor':'end','font-size':10,fill:'#6e7681'});t.textContent=p[0];svg.appendChild(t)});
+  var lm=-1,pinned=null;
+  for(var w=0;w<53;w++){var wd=new Date(start);wd.setDate(wd.getDate()+w*7);
+    if(wd.getMonth()!==lm&&w<51){lm=wd.getMonth();var t=S('text',{x:x0+w*(cell+gap),y:y0-8,'font-size':10,fill:'#8b949e'});t.textContent=wd.toLocaleDateString('en-US',{month:'short'});svg.appendChild(t)}
+    for(var d=0;d<7;d++){var day=new Date(start);day.setDate(day.getDate()+w*7+d);if(day>today)continue;
+      var k=iso(day),c=counts[k]||0;
+      var r=S('rect',{x:x0+w*(cell+gap),y:y0+d*(cell+gap),width:cell,height:cell,rx:3,fill:'var(--l'+lvl(c)+')',class:'cell'});
+      (function(r,k,c,day){hover(r,c+' contribution'+(c===1?'':'s'),function(){var l=[fdate(day)];var rp=state.repos.filter(function(x){return x.pushed_at&&iso(new Date(x.pushed_at))===k}).map(function(x){return x.name});if(rp.length)l.push('Last pushed: '+rp.slice(0,4).join(', ')+(rp.length>4?' +'+(rp.length-4):''));return l});
+        r.addEventListener('click',function(){$('heatHint').textContent=fdate(day)+': '+c+' contribution'+(c===1?'':'s')+(pinned===k?'':' (pinned)');pinned=k})})(r,k,c,day);
+      svg.appendChild(r)}}}
+
+function months(counts){var svg=$('months');clear(svg);var now=new Date(),arr=[];
+  for(var i=11;i>=0;i--){var d=new Date(now.getFullYear(),now.getMonth()-i,1);arr.push({k:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),d:d,v:0})}
+  Object.keys(counts).forEach(function(k){var m=arr.find(function(a){return a.k===k.slice(0,7)});if(m)m.v+=counts[k]});
+  bars(svg,arr.map(function(a){return{label:a.d.toLocaleDateString('en-US',{month:'short'}),v:a.v,tip:a.d.toLocaleDateString('en-US',{month:'long',year:'numeric'})}}),520,230)}
+function weekdays(counts){var svg=$('weekdays');clear(svg);var tot=[0,0,0,0,0,0,0],lim=new Date();lim.setDate(lim.getDate()-365);
+  Object.keys(counts).forEach(function(k){var d=new Date(k+'T00:00:00');if(d>=lim)tot[d.getDay()]+=counts[k]});
+  var N=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  bars(svg,tot.map(function(v,i){return{label:N[i].slice(0,3),v:v,tip:N[i]}}),520,230)}
+function bars(svg,items,W,H){var base=H-34,top=26,mx=Math.max.apply(null,items.map(function(i){return i.v}))||1,n=items.length,step=(W-20)/n,bw=step*.66,best=items.findIndex(function(i){return i.v===mx});
+  var defs=S('defs');['bar:#36BCF7:#8b5cf6','peak:#f7b731:#ff7b72'].forEach(function(s){var p=s.split(':'),g=S('linearGradient',{id:'g-'+svg.id+'-'+p[0],x1:0,y1:0,x2:0,y2:1});g.appendChild(S('stop',{offset:0,'stop-color':p[1]}));g.appendChild(S('stop',{offset:1,'stop-color':p[2]}));defs.appendChild(g)});svg.appendChild(defs);
+  items.forEach(function(it,i){var x=10+i*step+(step-bw)/2,hh=Math.max(3,(base-top)*it.v/mx);
+    var r=S('rect',{x:x,y:base,width:bw,height:0,rx:6,fill:'url(#g-'+svg.id+'-'+(i===best&&it.v>0?'peak':'bar')+')',class:'bar'});svg.appendChild(r);
+    requestAnimationFrame(function(){r.style.transition='y .7s cubic-bezier(.2,.8,.2,1),height .7s cubic-bezier(.2,.8,.2,1)';r.setAttribute('y',base-hh);r.setAttribute('height',hh)});
+    hover(r,it.v+' contributions',[it.tip]);
+    var v=S('text',{x:x+bw/2,y:base-hh-6,'text-anchor':'middle','font-size':11,'font-weight':700,fill:'#e6edf3'});v.textContent=it.v;svg.appendChild(v);
+    var l=S('text',{x:x+bw/2,y:base+18,'text-anchor':'middle','font-size':11,fill:'#8b949e'});l.textContent=it.label;svg.appendChild(l)})}
+
+/* ---------- repos + languages ---------- */
+function langColor(l){return LC[l]||'#8b949e'}
+function donut(){var svg=$('donut'),lg=$('langLegend');clear(svg);clear(lg);var m={},tot=0;
+  state.repos.forEach(function(r){var l=r.language||'Other';m[l]=(m[l]||0)+1;tot++});
+  var arr=Object.keys(m).map(function(k){return[k,m[k]]}).sort(function(a,b){return b[1]-a[1]}).slice(0,8),R=70,C=2*Math.PI*R,off=0;
+  svg.appendChild(S('circle',{cx:100,cy:100,r:R,fill:'none',stroke:'#161b22','stroke-width':26}));
+  var g=S('g',{transform:'rotate(-90 100 100)'});svg.appendChild(g);
+  arr.forEach(function(a){var L=a[1]/tot*C,c=S('circle',{cx:100,cy:100,r:R,fill:'none',stroke:langColor(a[0]),'stroke-width':26,'stroke-dasharray':(Math.max(0,L-2))+' '+C,'stroke-dashoffset':-off,style:'cursor:pointer;transition:stroke-width .15s'});
+    c.addEventListener('mouseenter',function(){c.setAttribute('stroke-width',32)});c.addEventListener('mouseleave',function(){c.setAttribute('stroke-width',26)});
+    hover(c,a[0],[a[1]+' repos · '+Math.round(a[1]/tot*100)+'%']);g.appendChild(c);off+=L;
+    var row=h('div',{},h('i',{style:'background:'+langColor(a[0])}),a[0],h('em',{text:a[1]+' · '+Math.round(a[1]/tot*100)+'%'}));
+    row.addEventListener('click',function(){setLang(a[0])});row.style.cursor='pointer';lg.appendChild(row)});
+  var t=S('text',{x:100,y:104,'text-anchor':'middle','font-size':26,'font-weight':800,fill:'#e6edf3'});t.textContent=tot;svg.appendChild(t);
+  var t2=S('text',{x:100,y:122,'text-anchor':'middle','font-size':10,fill:'#8b949e'});t2.textContent='repositories';svg.appendChild(t2)}
+function setLang(l){state.lang=state.lang===l?'All':l;renderRepos()}
+function renderRepos(){var q=$('q').value.trim().toLowerCase(),s=$('sort').value;
+  var langs=['All'].concat(Array.from(new Set(state.repos.map(function(r){return r.language}).filter(Boolean))).sort());
+  var ch=$('chips');clear(ch);langs.forEach(function(l){var b=h('button',{type:'button',class:'chip'+(state.lang===l?' on':''),text:l});b.style.background='';b.addEventListener('click',function(){state.lang=l;renderRepos()});ch.appendChild(b)});
+  var list=state.repos.filter(function(r){return(state.lang==='All'||r.language===state.lang)&&(!q||(r.name+' '+(r.description||'')).toLowerCase().indexOf(q)>-1)});
+  list.sort(function(a,b){return s==='stars'?b.stargazers_count-a.stargazers_count:s==='name'?a.name.localeCompare(b.name):new Date(b.pushed_at)-new Date(a.pushed_at)});
+  var box=$('repos');clear(box);if(!list.length)box.appendChild(h('div',{class:'note',text:'No repositories match.'}));
+  list.forEach(function(r){var hot=Date.now()-new Date(r.pushed_at)<864e5;
+    var meta=h('div',{class:'meta'});
+    if(r.language)meta.appendChild(h('span',{class:'lang'},h('i',{style:'background:'+langColor(r.language)}),r.language));
+    meta.appendChild(h('span',{text:'⭐ '+r.stargazers_count}));
+    meta.appendChild(h('span',{class:hot?'hot':'',text:(hot?'🔥 ':'⏱ ')+'pushed '+ago(r.pushed_at)}));
+    var card=h('div',{class:'repo'},h('a',{class:'n',href:r.html_url,target:'_blank',rel:'noopener',text:r.name}),h('p',{text:r.description||'No description yet.'}),meta);
+    hover(card,r.name,['Created '+fdate(new Date(r.created_at)),'Last push '+fdate(new Date(r.pushed_at))+' ('+ago(r.pushed_at)+')'].concat(r.homepage?['Live: '+r.homepage]:[]));box.appendChild(card)})}
+
+/* ---------- events feed ---------- */
+function describe(e){var repo=e.repo.name.replace(USER+'/',''),p=e.payload||{},url='https://github.com/'+e.repo.name;
+  switch(e.type){
+    case'PushEvent':{var br=(p.ref||'').replace('refs/heads/',''),cm=p.commits||[],n=p.size||p.distinct_size||cm.length;
+      var msg=cm.length?cm[cm.length-1].message.split('\n')[0]:'Pushed to '+br;
+      return{ic:'⬆️',t:'Pushed '+(n?n+' commit'+(n===1?'':'s')+' ':'')+'to '+repo,m:msg,u:(p.before&&p.head)?url+'/compare/'+p.before+'...'+p.head:url}}
+    case'CreateEvent':return{ic:'✨',t:'Created '+p.ref_type+(p.ref?' '+p.ref:'')+' in '+repo,m:p.description||'',u:url};
+    case'DeleteEvent':return{ic:'🗑️',t:'Deleted '+p.ref_type+' '+(p.ref||'')+' in '+repo,m:'',u:url};
+    case'WatchEvent':return{ic:'⭐',t:'Starred '+repo,m:'',u:url};
+    case'ForkEvent':return{ic:'🍴',t:'Forked '+repo,m:'',u:url};
+    case'IssuesEvent':return{ic:'🐛',t:(p.action||'Updated')+' an issue in '+repo,m:(p.issue||{}).title||'',u:(p.issue||{}).html_url||url};
+    case'PullRequestEvent':return{ic:'🔀',t:(p.action||'Updated')+' a pull request in '+repo,m:(p.pull_request||{}).title||'',u:(p.pull_request||{}).html_url||url};
+    case'PublicEvent':return{ic:'🌍',t:'Made '+repo+' public',m:'',u:url};
+    default:return{ic:'📌',t:e.type.replace('Event','')+' · '+repo,m:'',u:url}}}
+function feed(events,first){var ul=$('feed');clear(ul);if(!events.length){ul.appendChild(h('li',{class:'note',text:'No recent public activity.'}));return}
+  events.slice(0,30).forEach(function(e){var d=describe(e),isNew=!first&&state.seen&&new Date(e.created_at)>state.seen;
+    var li=h('li',{class:isNew?'new':''},h('div',{class:'ic',text:d.ic}),h('div',{},h('div',{class:'t'},h('a',{href:d.u,target:'_blank',rel:'noopener',text:d.t})),d.m?h('div',{class:'m',text:d.m.slice(0,140)}):null),h('div',{class:'when',text:ago(e.created_at)}));
+    hover(li,d.t,[new Date(e.created_at).toLocaleString()]);ul.appendChild(li)});
+  if(events.length)state.seen=new Date(events[0].created_at)}
+
+/* ---------- orchestration ---------- */
+function setStatus(kind,msg){$('dot').className='dot'+(kind==='ok'?'':kind==='warn'?' off':' err');$('status').textContent=msg}
+var firstFeed=true;
+function load(){setStatus('warn','Refreshing…');
+  var jobs=[getJSON(API+'/users/'+USER),getJSON(API+'/users/'+USER+'/repos?per_page=100&sort=pushed'),getJSON(API+'/users/'+USER+'/events/public?per_page=50'),
+    getJSON(DATA+'?t='+Math.floor(Date.now()/3e5),{raw:true}).catch(function(){return null})];
+  return Promise.all(jobs.map(function(p){return p.then(function(v){return{ok:true,v:v}},function(e){return{ok:false,e:e}})})).then(function(res){
+    var prof=res[0],repos=res[1],ev=res[2],con=res[3],rate=res.find(function(r){return !r.ok&&r.e&&r.e.rate});
+    if(repos.ok){state.repos=repos.v.filter(function(r){return!r.fork});donut();renderRepos()}
+    if(ev.ok){feed(ev.v,firstFeed);firstFeed=false}
+    var items=[];
+    if(con.ok&&con.v&&con.v.counts){var c=con.v.counts,end=new Date();end.setHours(0,0,0,0);var s=streakInfo(c,new Date(con.v.start+'T00:00:00'),end);state.counts=c;
+      items.push(['Total contributions',s.total.toLocaleString(),'Since '+con.v.start,'#36BCF7','#8b5cf6'],['Current streak',s.cur+' d',s.cur?s.curStart+' → '+s.curEnd:'Commit today to start one','#f7b731','#ff7b72'],['Longest streak',s.best+' d',s.bs?s.bs+' → '+s.be:'','#28c840','#36BCF7']);
+      heat(c);months(c);weekdays(c);$('heatHint').textContent='Hover a day to see what happened. Click a day to pin it. Data synced '+ago(con.v.generated)+'.'}
+    else{$('heatHint').textContent='Contribution data is syncing. It appears after the daily workflow runs.';$('heat').setAttribute('height',0)}
+    if(prof.ok){items.push(['Public repos',prof.v.public_repos,'github.com/'+USER,'#8b5cf6','#db61a2'],['Followers',prof.v.followers,'Following '+prof.v.following,'#db61a2','#f7b731'])}
+    if(items.length)tiles(items);
+    if(rate){var rs=rate.e.reset?new Date(rate.e.reset*1000).toLocaleTimeString():'soon';setStatus('err','GitHub rate limit hit · resets '+rs)}
+    else if(!repos.ok&&!ev.ok)setStatus('err','Offline or blocked')
+    else setStatus('ok','Live · updated '+new Date().toLocaleTimeString());
+    state.left=REFRESH})}
+$('refresh').addEventListener('click',load);$('q').addEventListener('input',renderRepos);$('sort').addEventListener('change',renderRepos);
+setInterval(function(){if(document.hidden)return;state.left--;$('next').textContent='next refresh in '+Math.max(0,state.left)+'s';if(state.left<=0)load()},1000);
+document.addEventListener('visibilitychange',function(){if(!document.hidden&&state.left<REFRESH-15)load()});
+load();
+})();
+</script>
+</body>
+</html>
