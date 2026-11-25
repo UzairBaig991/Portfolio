@@ -299,6 +299,459 @@ html[data-style=glass] .statement-text .w {
   margin-left: auto;
   margin-right: 10px;
 }
+
+/* === ANIMATED THEME-MATCHED LIQUID GLASS BUBBLE CURSOR === */
+@media (hover: hover) and (pointer: fine) {
+  body.custom-cursor-active,
+  body.custom-cursor-active a,
+  body.custom-cursor-active button,
+  body.custom-cursor-active summary,
+  body.custom-cursor-active [role="button"] {
+    cursor: none !important;
+  }
+  body.custom-cursor-active input,
+  body.custom-cursor-active textarea {
+    cursor: text !important;
+  }
+}
+
+#custom-cursor-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  body.custom-cursor-active #custom-cursor-layer {
+    display: block;
+  }
+}
+
+/* Pinpoint high-visibility center dot */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent), 0 0 4px #ffffff;
+  will-change: transform;
+  transition: width 0.2s ease, height 0.2s ease, margin 0.2s ease, opacity 0.2s ease, background-color 0.25s ease;
+  z-index: 10002;
+}
+html.light .cursor-dot {
+  background: var(--fg);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent), 0 0 4px rgba(0,0,0,0.4);
+}
+#custom-cursor-layer.is-card .cursor-dot {
+  opacity: 0.25;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  margin-top: -3px;
+}
+
+/* Outer 3D Liquid Glass Bubble */
+.cursor-bubble {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 46px;
+  height: 46px;
+  margin-left: -23px;
+  margin-top: -23px;
+  border-radius: 50%;
+  will-change: transform, width, height;
+  z-index: 10001;
+  display: grid;
+  place-items: center;
+  transition: width 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              margin 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.3s ease,
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+  background:
+    radial-gradient(circle at 28% 26%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.22) 15%, transparent 40%),
+    radial-gradient(circle at 74% 76%, color-mix(in srgb, var(--accent2) 45%, transparent) 0%, transparent 55%),
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--accent) 18%, transparent) 0%, color-mix(in srgb, var(--accent) 32%, transparent) 72%, color-mix(in srgb, var(--accent) 60%, #fff) 100%);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 85%, #ffffff);
+  box-shadow:
+    0 0 22px -2px color-mix(in srgb, var(--accent) 60%, transparent),
+    0 0 42px -8px color-mix(in srgb, var(--accent2) 45%, transparent),
+    inset 0 0 14px color-mix(in srgb, var(--accent) 45%, rgba(255, 255, 255, 0.35));
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+}
+html.light .cursor-bubble {
+  background:
+    radial-gradient(circle at 28% 26%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.4) 16%, transparent 42%),
+    radial-gradient(circle at 74% 76%, color-mix(in srgb, var(--accent2) 45%, transparent) 0%, transparent 55%),
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--accent) 22%, transparent) 0%, color-mix(in srgb, var(--accent) 42%, transparent) 75%, color-mix(in srgb, var(--accent) 80%, #000) 100%);
+  border: 2px solid color-mix(in srgb, var(--accent) 90%, #11131a);
+  box-shadow:
+    0 8px 24px -4px color-mix(in srgb, var(--accent) 55%, rgba(0,0,0,0.25)),
+    inset 0 0 14px color-mix(in srgb, var(--accent) 50%, #ffffff);
+}
+
+/* Secondary specular highlight dot on the bubble */
+.cursor-bubble::before {
+  content: "";
+  position: absolute;
+  top: 16%;
+  left: 19%;
+  width: 22%;
+  height: 14%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.78);
+  transform: rotate(-32deg);
+  filter: blur(0.5px);
+  pointer-events: none;
+}
+/* Bottom-right rim reflection */
+.cursor-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: 13%;
+  right: 15%;
+  width: 16%;
+  height: 10%;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 75%, #ffffff);
+  transform: rotate(-32deg);
+  opacity: 0.75;
+  filter: blur(0.6px);
+  pointer-events: none;
+}
+
+/* Hovering interactive links/buttons */
+#custom-cursor-layer.is-interactive .cursor-bubble {
+  width: 62px;
+  height: 62px;
+  margin-left: -31px;
+  margin-top: -31px;
+  border-color: #ffffff;
+  box-shadow:
+    0 0 30px color-mix(in srgb, var(--accent) 78%, transparent),
+    0 0 55px -6px color-mix(in srgb, var(--accent2) 60%, transparent),
+    inset 0 0 20px color-mix(in srgb, var(--accent) 65%, #ffffff);
+}
+
+/* Hovering Project or Blog Cards */
+#custom-cursor-layer.is-card .cursor-bubble {
+  width: 82px;
+  height: 82px;
+  margin-left: -41px;
+  margin-top: -41px;
+  background:
+    radial-gradient(circle at 28% 26%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.18) 16%, transparent 42%),
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--bg) 72%, var(--accent)) 0%, color-mix(in srgb, var(--accent) 55%, var(--bg)) 85%, var(--accent) 100%);
+  border: 2px solid #ffffff;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, 0.55),
+    0 0 34px color-mix(in srgb, var(--accent) 80%, transparent),
+    inset 0 0 18px color-mix(in srgb, var(--accent) 60%, #ffffff);
+}
+
+/* Pressed state */
+#custom-cursor-layer.is-pressed .cursor-bubble {
+  width: 36px;
+  height: 36px;
+  margin-left: -18px;
+  margin-top: -18px;
+}
+
+.cursor-label {
+  font: 600 0.6875rem/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.85);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.22s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 2;
+  white-space: nowrap;
+}
+#custom-cursor-layer.is-card .cursor-label {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Floating Micro-Bubble Trail Particles */
+.cursor-trail-bubble {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  background:
+    radial-gradient(circle at 30% 30%, #ffffff 0%, color-mix(in srgb, var(--accent) 65%, transparent) 45%, color-mix(in srgb, var(--accent2) 40%, transparent) 100%);
+  border: 1px solid color-mix(in srgb, var(--accent) 80%, #ffffff);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 55%, transparent);
+  animation: trail-bubble-float 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes trail-bubble-float {
+  0% {
+    opacity: 0.85;
+    transform: translate3d(var(--bx), var(--by), 0) scale(0.5);
+  }
+  50% {
+    opacity: 0.65;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(var(--bx) + var(--bdx)), calc(var(--by) + var(--bdy) - 26px), 0) scale(1.25);
+  }
+}
+
+/* Click Shockwave Bubble Ripple */
+.cursor-click-ripple {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  margin-left: -10px;
+  margin-top: -10px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 18px var(--accent), inset 0 0 10px var(--accent2);
+  animation: cursor-ripple-out 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes cursor-ripple-out {
+  0% {
+    opacity: 0.95;
+    transform: translate3d(var(--rx), var(--ry), 0) scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--rx), var(--ry), 0) scale(3.6);
+  }
+}
+
+/* === TOP SCROLL PROGRESS NEON BEAM === */
+#scroll-beam {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 120;
+  pointer-events: none;
+  background: transparent;
+}
+#scroll-beam-bar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent));
+  box-shadow: 0 0 14px var(--accent), 0 0 28px var(--accent2);
+}
+
+/* === HERO QUICK-STAT PILLS & TYPEWRITER BADGE === */
+.hero-role-cycler {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-text);
+  font-weight: 600;
+}
+.typewriter-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: caret-blink 0.9s step-end infinite;
+  vertical-align: -2px;
+}
+@keyframes caret-blink {
+  50% { opacity: 0; }
+}
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+  animation: rise 0.85s calc(var(--hero-delay, 0s) + 0.3s) var(--ease-out) both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--g-hi, var(--line));
+  background: var(--g-soft, rgba(255,255,255,0.04));
+  box-shadow: var(--g-shine);
+  font: 500 0.75rem/1.2 var(--mono);
+  color: var(--fg);
+  transition: border-color 0.25s, transform 0.25s var(--ease), background 0.25s;
+}
+.hero-badge i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+.hero-badge:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+/* === INLINE LIVE FILTER SEARCH INPUT ON PROJECTS PAGE === */
+.work-inline-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--g-hi, var(--line));
+  background: var(--g-soft);
+  border-radius: 999px;
+  padding: 0 14px;
+  min-height: 36px;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.work-inline-search:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+.work-inline-search input {
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font: 400 0.8125rem/1 var(--mono);
+  color: var(--fg);
+  width: 190px;
+}
+.work-inline-search input::placeholder {
+  color: var(--muted);
+}
+@media (max-width: 680px) {
+  .work-inline-search {
+    width: 100%;
+  }
+  .work-inline-search input {
+    width: 100%;
+  }
+}
+
+/* Clickable Skill Tags with Project Counts */
+.tag[data-skill-filter] {
+  cursor: pointer;
+}
+.tag-cnt {
+  opacity: 0.6;
+  font-size: 0.68rem;
+  margin-left: 5px;
+}
+
+/* === IMAGE LIGHTBOX MODAL === */
+.detail-hero {
+  cursor: zoom-in;
+}
+.lightbox-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  background: rgba(5, 6, 10, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: none;
+  place-items: center;
+  padding: clamp(16px, 4vw, 48px);
+  animation: fade-in-lb 0.28s ease both;
+}
+.lightbox-modal.is-open {
+  display: grid;
+}
+.lightbox-modal img {
+  max-width: min(1200px, 94vw);
+  max-height: 86dvh;
+  border-radius: 12px;
+  border: 1px solid var(--g-hi);
+  box-shadow: 0 30px 90px rgba(0,0,0,0.85), 0 0 50px -12px var(--glow);
+  object-fit: contain;
+}
+.lightbox-close {
+  position: fixed;
+  top: 22px;
+  right: 22px;
+}
+@keyframes fade-in-lb {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+
+/* === ULTRA-SMOOTH GPU-COMPOSITED BUBBLE CURSOR OVERRIDES === */
+.cursor-dot {
+  transition: opacity 0.18s ease !important;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+.cursor-bubble-pos {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 10001;
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: none !important;
+}
+.cursor-bubble {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  backface-visibility: hidden;
+  transition: width 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              margin 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.22s ease,
+              box-shadow 0.22s ease !important;
+}
+.cursor-pool-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  margin-top: -5px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transition: none !important;
+  background: radial-gradient(circle at 30% 30%, #ffffff 0%, color-mix(in srgb, var(--accent) 75%, transparent) 55%, transparent 100%);
+  border: 1px solid color-mix(in srgb, var(--accent) 70%, #ffffff);
+  opacity: 0;
+}
+
 </style>
 <script>
 (function(){
@@ -315,6 +768,29 @@ html[data-style=glass] .statement-text .w {
 </script>
 </head>
 <body>
+<div id="scroll-beam" aria-hidden="true"><span id="scroll-beam-bar"></span></div>
+<div id="custom-cursor-layer" aria-hidden="true">
+  <div class="cursor-trail-pool" id="cursor-trail-pool">
+    <span class="cursor-pool-dot"></span>
+    <span class="cursor-pool-dot"></span>
+    <span class="cursor-pool-dot"></span>
+    <span class="cursor-pool-dot"></span>
+    <span class="cursor-pool-dot"></span>
+    <span class="cursor-pool-dot"></span>
+  </div>
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-bubble-pos" id="cursor-bubble-pos">
+    <div class="cursor-bubble" id="cursor-bubble">
+      <span class="cursor-label" id="cursor-label">VIEW ↗</span>
+    </div>
+  </div>
+</div>
+<div class="lightbox-modal" id="lightbox-modal" role="dialog" aria-label="Image preview">
+  <button class="icon-btn lightbox-close" id="lightbox-close" type="button" aria-label="Close preview">
+    <svg aria-hidden="true" fill="none" height="18" viewBox="0 0 24 24" width="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+  </button>
+  <img id="lightbox-img" src="" alt="Project full preview"/>
+</div>
 <div class="site-shell" id="site-shell" data-page="home">
   <!-- Glass Background & 3D Floating Glyphs -->
   <div class="glass-bg" id="glass-bg" data-page="home" aria-hidden="true">
@@ -479,7 +955,7 @@ html[data-style=glass] .statement-text .w {
           <span>bs software engineering @ riphah international university<b>✦</b></span>
           <span>web dev intern @ arch technologies<b>✦</b></span>
           <span>android dev intern @ crixsoft solution<b>✦</b></span>
-          <span>31+ software projects shipped<b>✦</b></span>
+          <span>45+ software projects shipped<b>✦</b></span>
           <span>c++ · python · react.js · node.js · flutter · kotlin<b>✦</b></span>
         </span>
         <span class="ticker-group">
@@ -487,7 +963,7 @@ html[data-style=glass] .statement-text .w {
           <span>bs software engineering @ riphah international university<b>✦</b></span>
           <span>web dev intern @ arch technologies<b>✦</b></span>
           <span>android dev intern @ crixsoft solution<b>✦</b></span>
-          <span>31+ software projects shipped<b>✦</b></span>
+          <span>45+ software projects shipped<b>✦</b></span>
           <span>c++ · python · react.js · node.js · flutter · kotlin<b>✦</b></span>
         </span>
         <span class="ticker-group">
@@ -495,7 +971,7 @@ html[data-style=glass] .statement-text .w {
           <span>bs software engineering @ riphah international university<b>✦</b></span>
           <span>web dev intern @ arch technologies<b>✦</b></span>
           <span>android dev intern @ crixsoft solution<b>✦</b></span>
-          <span>31+ software projects shipped<b>✦</b></span>
+          <span>45+ software projects shipped<b>✦</b></span>
           <span>c++ · python · react.js · node.js · flutter · kotlin<b>✦</b></span>
         </span>
       </div>
@@ -521,7 +997,7 @@ html[data-style=glass] .statement-text .w {
       <nav aria-label="Footer">
         <a href="#home">Home</a>
         <a href="#about">About</a>
-        <a href="#work">Projects (31)</a>
+        <a href="#work">Projects (45)</a>
         <a href="#blog">Blog</a>
         <a href="#contact">Contact</a>
         <a href="#links">All Links</a>
@@ -590,7 +1066,7 @@ html[data-style=glass] .statement-text .w {
       <span class="eyebrow">Search this site (Esc to close)</span>
       <span class="search-input">
         <svg aria-hidden="true" fill="none" height="28" viewBox="0 0 24 24" width="28" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
-        <input id="search-input-field" placeholder="Search 31 projects, skills, internships, articles..."/>
+        <input id="search-input-field" placeholder="Search 45 projects, skills, internships, articles..."/>
       </span>
     </label>
     <div aria-live="polite">
@@ -603,7 +1079,7 @@ html[data-style=glass] .statement-text .w {
 </dialog>
 
 <script>
-const PROJECTS = [{"slug": "astraledger", "title": "Astraledger", "category": "Node.js", "group": "Web", "year": "2025–26", "stage": "Live", "highlight": "GST & billing invoice suite", "image": "images/astraledger.jpeg", "url": "https://github.com/UzairBaig991?tab=repositories", "repoUrl": "https://github.com/UzairBaig991?tab=repositories", "role": "Founder & Solo Full-Stack Developer", "tags": ["Node.js", "JavaScript", "Web App", "GST Billing", "CRUD"], "summary": "Web-based invoice management system enabling shop owners to manage invoices and generate GST, service, and non-GST bills.", "problem": "Small business and shop owners frequently struggle with complex accounting software when they simply need to generate accurate GST, service, and non-GST bills and track customer invoices.", "idea": "Engineer a streamlined, fast web-based invoice management platform tailored to real-world shop billing workflows.", "features": ["Generate GST, non-GST, and service invoices in under a minute", "Interactive billing dashboard designed for shop owners", "Customer and invoice ledger with full CRUD operations", "Print-ready and shareable invoice formatting"]}, {"slug": "enterprise-flow-erp", "title": "Enterprise Flow ERP", "category": "Node.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Enterprise-level workflow ERP", "image": "images/ERP-System.jpeg", "url": "https://github.com/UzairBaig991/Enterprise-Flow-ERP", "repoUrl": "https://github.com/UzairBaig991/Enterprise-Flow-ERP", "role": "Solo Full-Stack Developer", "tags": ["Node.js", "JavaScript", "Enterprise", "ERP", "REST API"], "summary": "Complete interactive enterprise-level ERP system allowing organizations to manage core business tasks, resources, and operations seamlessly.", "problem": "Enterprise resource planning suites are often prohibitively expensive and fragmented for growing teams.", "idea": "Provide an integrated, zero-cost interactive ERP platform where users can execute tasks, monitor workflows, and manage operations in one unified workspace.", "features": ["Centralized enterprise dashboard for operations and task tracking", "Modular workflow execution across business units", "Responsive web interface powered by a Node.js backend", "Real-time status tracking and resource allocation"]}, {"slug": "uzair-mart", "title": "UzairMart — E-Commerce App", "category": "Kotlin", "group": "Mobile", "year": "2026", "stage": "Completed", "highlight": "Native Android shopping experience", "image": "images/uzair-mart.jpeg", "url": "https://github.com/UzairBaig991/UzairMart", "repoUrl": "https://github.com/UzairBaig991/UzairMart", "role": "Solo Android Developer", "tags": ["Kotlin", "Android SDK", "Material UI", "E-Commerce"], "summary": "Complete interactive e-commerce Android application in Kotlin featuring product discovery, shopping cart management, and checkout flows.", "problem": "Mobile shoppers expect snappy native performance, intuitive cart management, and frictionless checkout on Android devices.", "idea": "Build a native Kotlin Android storefront with clean Material Design components and smooth cart state management.", "features": ["Product catalog browsing with category filters and rich item views", "Interactive shopping cart with live quantity and total calculation", "Streamlined multi-step mobile checkout workflow", "Engineered natively in Kotlin for Android"]}, {"slug": "recipe-finder-ai", "title": "Recipe Finder AI App", "category": "Flutter", "group": "Mobile", "year": "2026", "stage": "Completed", "highlight": "AI-powered recipe generator", "image": "images/recipe-finder.jpeg", "url": "https://github.com/UzairBaig991/Recipe-Finder", "repoUrl": "https://github.com/UzairBaig991/Recipe-Finder", "role": "Solo Mobile Developer", "tags": ["Flutter", "Dart", "AI Integration", "Cross-Platform"], "summary": "Cross-platform Flutter Recipe Finder app where users can search dishes, save custom recipes, and use AI to generate new recipes on demand.", "problem": "Home cooks often want instant recipe ideas from the ingredients they have on hand alongside a personal cookbook.", "idea": "Combine custom recipe creation, smart search, and AI-powered recipe generation inside a single Flutter mobile app.", "features": ["AI-assisted recipe generation from ingredients and user prompts", "Fast recipe search with step-by-step preparation guides", "Create, edit, and organize personal recipes", "Fluid cross-platform animations built with Flutter & Dart"]}, {"slug": "connect-hub", "title": "ConnectHub Social Platform", "category": "Node.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Full-stack social feed & reactions", "image": "images/connecthub.jpeg", "url": "https://github.com/UzairBaig991/Connect-Hub", "repoUrl": "https://github.com/UzairBaig991/Connect-Hub", "role": "Solo Full-Stack Developer", "tags": ["Node.js", "React.js", "Tailwind CSS", "Full-Stack"], "summary": "Social media platform built with Node.js, React.js, and Tailwind CSS where users publish posts, interact, and react with likes and dislikes.", "problem": "Modern social feeds require responsive UI state updates and clean backend API synchronization for user interactions.", "idea": "Create a full-stack community platform using React.js, Tailwind CSS, and Node.js supporting posts, feeds, and instant reactions.", "features": ["Interactive community feed with post publishing", "Like and dislike reaction system with instant UI feedback", "Responsive component design styled with Tailwind CSS", "RESTful Node.js backend architecture"]}, {"slug": "maze-solver", "title": "Maze Solver (DFS & BFS)", "category": "DSA", "group": "Core CS", "year": "2025", "stage": "Completed", "highlight": "Visual graph pathfinding engine", "image": "images/maze-solver.png", "url": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1", "repoUrl": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1", "role": "Solo Algorithm Developer", "tags": ["Python", "DSA", "DFS", "BFS", "Graph Algorithms"], "summary": "Visual maze solver using Depth-First Search (DFS) and Breadth-First Search (BFS) graph traversal algorithms in Python.", "problem": "Comparing shortest-path optimality (BFS) against deep branch exploration (DFS) is far clearer when visualized step by step on a grid graph.", "idea": "Implement an interactive visual maze solver in Python that animates DFS and BFS graph traversal side by side.", "features": ["Visual comparison of Depth-First Search (stack) and Breadth-First Search (queue)", "Real-time rendering of visited cells, frontier nodes, and shortest path", "Demonstrates time and space complexity trade-offs in graph theory", "Clean modular Python data structures"]}, {"slug": "prescripto-doctor-appointment", "title": "Prescripto — Doctor Appointment", "category": "Node.js", "group": "Web", "year": "2025", "stage": "Completed", "highlight": "Patient & schedule management", "image": "images/doctor-appointment.jpeg", "url": "https://github.com/UzairBaig991/Prescripto", "repoUrl": "https://github.com/UzairBaig991/Prescripto", "role": "Group Project Lead / Developer", "tags": ["Node.js", "JavaScript", "Healthcare", "Scheduling"], "summary": "Complete doctor appointment management system with slot scheduling, patient records, and appointment tracking.", "problem": "Clinics and patients need a reliable system to coordinate doctor availability, bookings, and visit tracking without double-booking.", "idea": "Build a structured appointment scheduling and patient management system powered by Node.js.", "features": ["Doctor slot scheduling and availability management", "Patient registration and medical appointment history", "Status tracking for booked, completed, and cancelled visits", "Built collaboratively using Git & GitHub workflows"]}, {"slug": "medicare-pharmacy-app", "title": "MediCare — Pharmacy Android App", "category": "Kotlin", "group": "Mobile", "year": "2026", "stage": "Completed", "highlight": "Location-aware pharmacy mobile app", "image": "images/pharmacy-app.jpeg", "url": "https://github.com/UzairBaig991/MediCare-", "repoUrl": "https://github.com/UzairBaig991/MediCare-", "role": "Solo Android Developer", "tags": ["Kotlin", "Android", "Location Services", "Healthcare"], "summary": "Interactive Android pharmacy application built in Kotlin featuring medicine lookup, location-based services, and user content.", "problem": "Patients need fast mobile access to pharmacy catalogs and location-aware healthcare services.", "idea": "Develop a native Kotlin Android application connecting users with pharmacy inventory and location features.", "features": ["Medicine catalog browsing and instant search", "Location-based pharmacy lookup and details", "Accessible mobile UI engineered in Kotlin", "Built during Android App Development specialization"]}, {"slug": "crypto-currency-android", "title": "Crypto Currency Tracker", "category": "Kotlin", "group": "Mobile", "year": "2026", "stage": "Completed", "highlight": "Live crypto prices & portfolio", "image": "images/crypto-currency.jpeg", "url": "https://github.com/UzairBaig991/Crypto-Currency", "repoUrl": "https://github.com/UzairBaig991/Crypto-Currency", "role": "Solo Android Developer", "tags": ["Kotlin", "Android", "Real-Time Data", "FinTech"], "summary": "Interactive cryptocurrency Android app in Kotlin with real-time price tracking and portfolio management features.", "problem": "Crypto investors need a fast mobile dashboard to monitor live market prices and track portfolio allocation.", "idea": "Build a native Kotlin Android app with real-time coin metrics and portfolio tracking.", "features": ["Real-time cryptocurrency price monitoring and market trends", "Personal portfolio tracking and holding summaries", "High-contrast financial UI for Android", "Native Kotlin implementation"]}, {"slug": "quiz-android-app", "title": "Quiz Android App", "category": "Kotlin", "group": "Mobile", "year": "2026", "stage": "Completed", "highlight": "Adaptive quizzes & progress tracking", "image": "images/quiz-app.jpeg", "url": "https://github.com/UzairBaig991/Quiz-Android-App", "repoUrl": "https://github.com/UzairBaig991/Quiz-Android-App", "role": "Solo Android Developer", "tags": ["Kotlin", "Android", "EdTech", "State Management"], "summary": "Interactive quiz application for Android with personalized question recommendations and user progress tracking.", "problem": "Students retain more knowledge when quizzes provide instant feedback, score analytics, and tailored question sets.", "idea": "Create a native Kotlin quiz app with adaptive question flows and progress tracking.", "features": ["Interactive multiple-choice quiz engine on Android", "Personalized question recommendations based on performance", "User score history and progress tracking", "Smooth native Android transitions"]}, {"slug": "invoice-maker-mobile", "title": "Invoice Maker Mobile App", "category": "React Native", "group": "Mobile", "year": "2026", "stage": "Live", "highlight": "Mobile-first invoice generator", "image": "images/invoice-maker.jpeg", "url": "https://comfy-dusk-ca6f8c.netlify.app/", "repoUrl": "https://github.com/UzairBaig991", "role": "Solo Mobile Developer", "tags": ["React Native", "JavaScript", "Mobile", "FinTech"], "summary": "Cross-platform mobile invoice creation and management application built with React Native.", "problem": "Freelancers and mobile business owners need to create and share client invoices directly from their smartphones.", "idea": "Build a lightweight React Native app for creating, previewing, and managing invoices on the go.", "features": ["Mobile-friendly form for itemized invoice creation", "Automatic tax, discount, and subtotal calculations", "Invoice history and status management", "Live interactive preview deployed on Netlify"]}, {"slug": "type-forge-typing-app", "title": "Type Forge — Typing App", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Live WPM & accuracy trainer", "image": "images/Typing-aaplication.jpeg", "url": "https://uzairbaig991.github.io/Type-Forge/", "repoUrl": "https://github.com/UzairBaig991/Type-Forge", "role": "Solo Frontend Developer", "tags": ["JavaScript", "HTML5", "CSS3", "EdTech"], "summary": "Interactive typing application designed to help beginners and developers improve their typing speed (WPM) and accuracy.", "problem": "Improving keyboard speed and accuracy requires real-time character validation and live WPM telemetry.", "idea": "Build a browser-based typing trainer with live keystroke highlighting, timer modes, and accuracy scoring.", "features": ["Real-time character-by-character accuracy highlighting", "Live Words Per Minute (WPM) and error rate calculation", "Practice passages tailored for beginners and programmers", "Live web app hosted on GitHub Pages"]}, {"slug": "movie-recommendation-system", "title": "Movie Recommendation System", "category": "Node.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Personalized movie discovery", "image": "images/movie-recommendation.jpeg", "url": "https://github.com/UzairBaig991/Movie-Recommendation-System", "repoUrl": "https://github.com/UzairBaig991/Movie-Recommendation-System", "role": "Solo Full-Stack Developer", "tags": ["Node.js", "JavaScript", "Recommendation Engine", "Web"], "summary": "Interactive movie recommendation system in Node.js with personalized suggestions and user reviews.", "problem": "Viewers spend too much time browsing huge catalogs without tailored movie recommendations.", "idea": "Create a Node.js web platform that surfaces personalized movie suggestions alongside user ratings and reviews.", "features": ["Personalized movie suggestions based on genres and user preferences", "User review and rating submission system", "Rich movie detail cards and instant search", "Node.js backend routing and data handling"]}, {"slug": "syntecxhub-ecommerce-store", "title": "Syntecxhub E-Commerce Store", "category": "Node.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Two-sided buyer & seller marketplace", "image": "images/e-commerce-store.jpeg", "url": "https://github.com/UzairBaig991/Syntecxhub-E-commerce-store", "repoUrl": "https://github.com/UzairBaig991/Syntecxhub-E-commerce-store", "role": "Solo Full-Stack Developer", "tags": ["Node.js", "JavaScript", "E-Commerce", "Full-Stack"], "summary": "Full-featured Node.js e-commerce store where users can list products for sale and purchase items across categories.", "problem": "Online marketplaces require both seller inventory listing workflows and smooth buyer cart/checkout experiences.", "idea": "Engineer a Node.js e-commerce platform supporting product listings, catalog discovery, and shopping cart checkout.", "features": ["Product listing and inventory management for sellers", "Buyer storefront with search and category filtering", "Shopping cart and order processing", "Built with Node.js and modern web standards"]}, {"slug": "weather-app-react", "title": "Weather Forecast App", "category": "React.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Real-time weather & forecasts", "image": "images/weather-app.jpeg", "url": "https://github.com/UzairBaig991/Syntecxhub-Weather-App", "repoUrl": "https://github.com/UzairBaig991/Syntecxhub-Weather-App", "role": "Solo Frontend Developer", "tags": ["React.js", "Weather API", "JavaScript", "Frontend"], "summary": "React.js weather application providing live current conditions, temperature metrics, and multi-day forecasts.", "problem": "Users want an instant, clutter-free dashboard of current weather conditions and upcoming forecasts for any city worldwide.", "idea": "Build a fast React.js weather application powered by live meteorological API data.", "features": ["Global city search with instant weather lookup", "Current temperature, humidity, and wind speed telemetry", "Forecast overview with dynamic weather state icons", "Component-driven React.js architecture"]}, {"slug": "notes-app-react", "title": "React Notes App", "category": "React.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Fast note capture & organization", "image": "images/notes-app.jpeg", "url": "https://github.com/UzairBaig991/Syntecxhub-Notes-App", "repoUrl": "https://github.com/UzairBaig991/Syntecxhub-Notes-App", "role": "Solo Frontend Developer", "tags": ["React.js", "JavaScript", "CRUD", "Productivity"], "summary": "Clean React.js notes application with instant create, edit, search, and delete functionality.", "problem": "Capturing and organizing notes in the browser should be instantaneous without page reloads.", "idea": "Create a responsive React.js single-page notes manager with stateful CRUD operations.", "features": ["Create, edit, and delete notes with zero latency", "Responsive card grid layout", "Persistent state management in React.js", "Distraction-free writing interface"]}, {"slug": "user-management-system", "title": "User Management System", "category": "Node.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Admin CRUD directory & roles", "image": "images/user-management-app.jpeg", "url": "https://github.com/UzairBaig991/Syntecxhub-User-Management-System", "repoUrl": "https://github.com/UzairBaig991/Syntecxhub-User-Management-System", "role": "Solo Full-Stack Developer", "tags": ["Node.js", "JavaScript", "CRUD", "Admin Panel"], "summary": "Node.js user management application with full create, view, edit, and delete functionality for user directories.", "problem": "Web platforms need a reliable administrative interface to manage user accounts, contact records, and roles.", "idea": "Build a clean Node.js CRUD application for managing user profiles and directory records.", "features": ["Full CRUD operations (Create, Read, Update, Delete) for user accounts", "Structured directory table with quick actions", "Form validation and clean REST routing", "Powered by Node.js"]}, {"slug": "task-management-app", "title": "Task Management App", "category": "Node.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Workflow & task tracker", "image": "images/task-manager.jpeg", "url": "https://github.com/UzairBaig991/Syntecxhub-Task-Manager", "repoUrl": "https://github.com/UzairBaig991/Syntecxhub-Task-Manager", "role": "Solo Full-Stack Developer", "tags": ["Node.js", "JavaScript", "Productivity", "CRUD"], "summary": "Node.js task management application with create, edit, status toggle, and delete functionality.", "problem": "Keeping track of daily deliverables and priorities requires a structured, distraction-free task board.", "idea": "Develop a streamlined task manager in Node.js to organize, update, and complete tasks efficiently.", "features": ["Create, update, and remove tasks seamlessly", "Track completion status and priorities", "Clean productivity-focused UI", "Node.js backend architecture"]}, {"slug": "camping-outdoor-planner", "title": "Camping & Outdoor Planner", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Location-based adventure planner", "image": "images/camping-app.jpeg", "url": "https://uzairbaig991.github.io/Camping-and-Outdoor-Adventure-Planner/", "repoUrl": "https://github.com/UzairBaig991/Camping-and-Outdoor-Adventure-Planner", "role": "Solo Frontend Developer", "tags": ["JavaScript", "HTML5", "CSS3", "Travel"], "summary": "Interactive camping and outdoor adventure application with location-based features and trip planning tools.", "problem": "Outdoor enthusiasts need a single place to organize camping trips, gear checklists, and destination details.", "idea": "Create an interactive web planner for outdoor adventures and campsite organization.", "features": ["Interactive trip and campsite planning interface", "Location-based outdoor adventure discovery", "User-generated notes and gear checklists", "Live demo deployed on GitHub Pages"]}, {"slug": "recupaws-animal-charity", "title": "RecuPaws — Animal Charity Site", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Donation & volunteer platform", "image": "images/animal-charity.jpeg", "url": "https://uzairbaig991.github.io/RecuPaws/", "repoUrl": "https://github.com/UzairBaig991/RecuPaws", "role": "Solo Frontend Developer", "tags": ["HTML5", "CSS3", "JavaScript", "Non-Profit UI"], "summary": "Interactive animal charity website featuring rescue stories, donation options, and volunteer registration.", "problem": "Animal rescue organizations need an empathetic, trustworthy web presence to drive adoptions, donations, and volunteer sign-ups.", "idea": "Design and build RecuPaws with clear calls-to-action for donors and community volunteers.", "features": ["Interactive donation and pet sponsorship flows", "Volunteer registration and rescue showcase", "Responsive layout across mobile and desktop", "Deployed live on GitHub Pages"]}, {"slug": "gym-website", "title": "Fitness & Gym Website", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Class schedules & trainer profiles", "image": "images/gym-website.jpeg", "url": "https://uzairbaig991.github.io/Gym-Website/", "repoUrl": "https://github.com/UzairBaig991/Gym-Website", "role": "Solo Frontend Developer", "tags": ["HTML5", "CSS3", "JavaScript", "Landing Page"], "summary": "Complete interactive gym website showcasing fitness programs, class schedules, membership tiers, and trainer profiles.", "problem": "Fitness centers need an energetic web presence where prospective members can explore class timings and trainer credentials.", "idea": "Build a modern responsive gym web experience with interactive schedules and program breakdowns.", "features": ["Interactive weekly class schedule", "Trainer profiles and fitness program showcase", "Membership inquiry and responsive mobile layout", "Live on GitHub Pages"]}, {"slug": "time-zone-converter", "title": "Time Zone Converter App", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Global clock & instant conversion", "image": "images/time-zone.jpeg", "url": "https://uzairbaig991.github.io/Time-Zone-Converter/", "repoUrl": "https://github.com/UzairBaig991/Time-Zone-Converter", "role": "Solo Frontend Developer", "tags": ["JavaScript", "HTML5", "CSS3", "Utility"], "summary": "Interactive time zone converter app displaying live world clocks and instant cross-timezone conversion.", "problem": "Distributed teams and students collaborating internationally constantly need to convert times across time zones.", "idea": "Build a clean browser utility for comparing live global times and converting hours instantly.", "features": ["Instant time conversion across global time zones", "Live current time display for selected regions", "Responsive, zero-dependency JavaScript implementation", "Live on GitHub Pages"]}, {"slug": "expense-tracker-web", "title": "Expense Tracker App", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Personal budget & spend ledger", "image": "images/expense-tracker.jpeg", "url": "https://uzairbaig991.github.io/Syntecxhub-Expense-Tracker/", "repoUrl": "https://github.com/UzairBaig991/Syntecxhub-Expense-Tracker", "role": "Solo Frontend Developer", "tags": ["JavaScript", "HTML5", "CSS3", "FinTech"], "summary": "Interactive expense tracking web application with add, delete, category breakdown, and balance summary features.", "problem": "Tracking daily expenses manually is tedious without an immediate visual summary of income versus spending.", "idea": "Build an intuitive browser-based expense ledger that updates totals and history in real time.", "features": ["Add and categorize expenses with instant balance updates", "Delete and review historical transactions", "Clean financial summary cards", "Hosted live on GitHub Pages"]}, {"slug": "music-playlist-web", "title": "Music Playlist Web Player", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Interactive browser audio playlist", "image": "images/music-Playlist.jpeg", "url": "https://uzairbaig991.github.io/MUSIC-PLAYLIST/", "repoUrl": "https://github.com/UzairBaig991/MUSIC-PLAYLIST", "role": "Solo Frontend Developer", "tags": ["JavaScript", "HTML5 Audio", "CSS3", "Media"], "summary": "Interactive web music playlist with add, delete, search, and audio playback functionality.", "problem": "Managing and playing a custom queue of tracks in the browser requires smooth DOM and audio state synchronization.", "idea": "Create a sleek web music player supporting dynamic playlist search, track management, and playback controls.", "features": ["Play, pause, skip, and scrub audio tracks", "Add, delete, and search songs in the active playlist", "Responsive player interface", "Live on GitHub Pages"]}, {"slug": "simple-todo-web", "title": "Simple To-Do Web App", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Minimalist daily task checklist", "image": "images/simple-to-do.jpeg", "url": "https://uzairbaig991.github.io/Simple-To-Do-App/", "repoUrl": "https://github.com/UzairBaig991/Simple-To-Do-App", "role": "Solo Frontend Developer", "tags": ["JavaScript", "HTML5", "CSS3", "Productivity"], "summary": "Interactive browser to-do application with task creation, completion toggling, and tracking.", "problem": "Users often want a fast, zero-setup checklist right in their browser to track daily tasks.", "idea": "Build a minimalist HTML/CSS/JS to-do app with instant keyboard-friendly task entry.", "features": ["Quick task addition and completion toggling", "Clean minimalist task list UI", "Lightweight zero-dependency JavaScript", "Live on GitHub Pages"]}, {"slug": "todo-list-nodejs", "title": "Node.js To-Do List App", "category": "Node.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Full-stack task persistence", "image": "images/Simple To-do App.jpeg", "url": "https://github.com/UzairBaig991/To-Do-App", "repoUrl": "https://github.com/UzairBaig991/To-Do-App", "role": "Solo Full-Stack Developer", "tags": ["Node.js", "JavaScript", "HTML/CSS", "CRUD"], "summary": "Interactive full-stack to-do list application powered by Node.js with task management and tracking.", "problem": "Persisting task lists on a backend server demonstrates full-stack request/response handling and state management.", "idea": "Combine a clean HTML/CSS/JS frontend with a Node.js backend for persistent task management.", "features": ["Server-backed task creation, updates, and deletion", "Interactive completion tracking", "Clean full-stack Node.js architecture", "Source code available on GitHub"]}, {"slug": "guess-the-number-game", "title": "Guess the Number Game", "category": "HTML/JS", "group": "Web", "year": "2024", "stage": "Completed", "highlight": "Interactive logic game & scoring", "image": "images/guess-the-number.jpeg", "url": "https://github.com/UzairBaig991/AnalysisofAlgorithmSE/blob/main/SemesterProject.html", "repoUrl": "https://github.com/UzairBaig991/AnalysisofAlgorithmSE", "role": "Solo Developer", "tags": ["JavaScript", "HTML5", "CSS3", "Game Logic"], "summary": "Interactive number guessing game built with HTML, CSS, and JavaScript featuring dynamic hints and score tracking.", "problem": "Creating engaging browser games requires responsive state feedback, attempt counters, and replayability.", "idea": "Design an interactive number guessing game with binary-search-inspired high/low hints and score tracking.", "features": ["Dynamic high/low hint feedback on every guess", "Attempt counter and high-score tracking", "Instant game reset and replay flow", "Built for Analysis of Algorithms coursework"]}, {"slug": "restaurant-system-assembly", "title": "Restaurant Management System", "category": "Assembly", "group": "Core CS", "year": "2024", "stage": "Completed", "highlight": "x86 Assembly low-level system", "image": "images/restaurant-system.jpeg", "url": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1/blob/main/3rd-Semester-COAL-Restaurant-System.asm", "repoUrl": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1", "role": "Solo Systems Developer", "tags": ["Assembly (x86)", "COAL", "Low-Level", "Control Flow"], "summary": "Complete console restaurant management system in Assembly language with time-based menus, order taking, and billing inquiry.", "problem": "Building multi-menu ordering and billing logic directly in Assembly language tests mastery of CPU registers, memory segments, and conditional branching.", "idea": "Implement a complete restaurant ordering and billing system in x86 Assembly for Computer Organization & Assembly Language (COAL).", "features": ["Time-based menu selection (breakfast, lunch, dinner)", "Interactive order placement and register-based arithmetic", "Low-level interrupt I/O and billing summary routines", "Deepened mastery of CPU control flow and memory layout"]}, {"slug": "banking-system-python", "title": "Banking System", "category": "Python", "group": "Core CS", "year": "2024", "stage": "Completed", "highlight": "Core banking ledger & transactions", "image": "images/banking-system.jpg", "url": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1/blob/main/3rd-Semester-SE-Banking-System.py", "repoUrl": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1", "role": "Solo Developer", "tags": ["Python", "File Handling", "OOP", "Console App"], "summary": "Complete console banking application in Python supporting account creation, deposits, withdrawals, and balance inquiries.", "problem": "Financial transaction systems must strictly validate balances, prevent overdrafts, and maintain accurate customer ledgers.", "idea": "Build a Python banking application simulating real-world account creation and transaction workflows.", "features": ["Account creation and customer record management", "Deposit and withdrawal processing with balance validation", "Instant balance inquiry and transaction summaries", "Clean modular Python implementation"]}, {"slug": "music-playlist-cpp", "title": "Music Playlist Manager (C++ OOP)", "category": "C++", "group": "Core CS", "year": "2024", "stage": "Completed", "highlight": "Object-oriented audio library", "image": "images/music-playlist.png", "url": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1", "repoUrl": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1", "role": "Solo C++ Developer", "tags": ["C++", "OOP", "Data Structures", "Classes"], "summary": "Object-oriented C++ playlist management system with add, delete, search, and playback simulation.", "problem": "Managing dynamic collections of songs cleanly requires solid encapsulation, classes, and linked data structures.", "idea": "Apply C++ Object-Oriented Programming principles to build a full-featured console playlist manager.", "features": ["Architected with C++ classes, encapsulation, and inheritance", "Add, remove, and search tracks across playlists", "Simulated playback and queue navigation", "Core Object-Oriented Programming milestone project"]}, {"slug": "employee-manager-cpp", "title": "Employee Manager System", "category": "C++", "group": "Core CS", "year": "2023", "stage": "Completed", "highlight": "First C++ CRUD & file system", "image": "images/employee-manager.jpg", "url": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1/blob/main/1st-Semester-Employee-System.cpp", "repoUrl": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1", "role": "Solo C++ Developer", "tags": ["C++", "CRUD", "File I/O", "Programming Fundamentals"], "summary": "Console application in C++ with full CRUD operations and file handling for managing employee records.", "problem": "Organizations need structured record systems to add, search, update, and remove employee data persistently.", "idea": "Build a complete C++ console CRUD application using file streams during 1st-semester Programming Fundamentals.", "features": ["Create, read, update, and delete employee records", "Persistent file storage using C++ fstream", "Fast ID lookup and record filtering", "Foundation project in C++ systems programming"]}];
+const PROJECTS = [{"slug": "astraledger", "title": "Astraledger", "category": "Node.js", "group": "Web", "year": "2025–26", "stage": "Live", "highlight": "GST & billing invoice suite", "image": "images/astraledger.jpeg", "url": "https://github.com/UzairBaig991?tab=repositories", "repoUrl": "https://github.com/UzairBaig991?tab=repositories", "role": "Founder & Solo Full-Stack Developer", "tags": ["Node.js", "JavaScript", "Web App", "GST Billing", "CRUD"], "summary": "Web-based invoice management system enabling shop owners to manage invoices and generate GST, service, and non-GST bills.", "problem": "Small business and shop owners frequently struggle with complex accounting software when they simply need to generate accurate GST, service, and non-GST bills and track customer invoices.", "idea": "Engineer a streamlined, fast web-based invoice management platform tailored to real-world shop billing workflows.", "features": ["Generate GST, non-GST, and service invoices in under a minute", "Interactive billing dashboard designed for shop owners", "Customer and invoice ledger with full CRUD operations", "Print-ready and shareable invoice formatting"]}, {"slug": "enterprise-flow-erp", "title": "Enterprise Flow ERP", "category": "Node.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Enterprise-level workflow ERP", "image": "images/ERP-System.jpeg", "url": "https://github.com/UzairBaig991/Enterprise-Flow-ERP", "repoUrl": "https://github.com/UzairBaig991/Enterprise-Flow-ERP", "role": "Solo Full-Stack Developer", "tags": ["Node.js", "JavaScript", "Enterprise", "ERP", "REST API"], "summary": "Complete interactive enterprise-level ERP system allowing organizations to manage core business tasks, resources, and operations seamlessly.", "problem": "Enterprise resource planning suites are often prohibitively expensive and fragmented for growing teams.", "idea": "Provide an integrated, zero-cost interactive ERP platform where users can execute tasks, monitor workflows, and manage operations in one unified workspace.", "features": ["Centralized enterprise dashboard for operations and task tracking", "Modular workflow execution across business units", "Responsive web interface powered by a Node.js backend", "Real-time status tracking and resource allocation"]}, {"slug": "uzair-mart", "title": "UzairMart — E-Commerce App", "category": "Kotlin", "group": "Mobile", "year": "2026", "stage": "Completed", "highlight": "Native Android shopping experience", "image": "images/uzair-mart.jpeg", "url": "https://github.com/UzairBaig991/UzairMart", "repoUrl": "https://github.com/UzairBaig991/UzairMart", "role": "Solo Android Developer", "tags": ["Kotlin", "Android SDK", "Material UI", "E-Commerce"], "summary": "Complete interactive e-commerce Android application in Kotlin featuring product discovery, shopping cart management, and checkout flows.", "problem": "Mobile shoppers expect snappy native performance, intuitive cart management, and frictionless checkout on Android devices.", "idea": "Build a native Kotlin Android storefront with clean Material Design components and smooth cart state management.", "features": ["Product catalog browsing with category filters and rich item views", "Interactive shopping cart with live quantity and total calculation", "Streamlined multi-step mobile checkout workflow", "Engineered natively in Kotlin for Android"]}, {"slug": "recipe-finder-ai", "title": "Recipe Finder AI App", "category": "Flutter", "group": "Mobile", "year": "2026", "stage": "Completed", "highlight": "AI-powered recipe generator", "image": "images/recipe-finder.jpeg", "url": "https://github.com/UzairBaig991/Recipe-Finder", "repoUrl": "https://github.com/UzairBaig991/Recipe-Finder", "role": "Solo Mobile Developer", "tags": ["Flutter", "Dart", "AI Integration", "Cross-Platform"], "summary": "Cross-platform Flutter Recipe Finder app where users can search dishes, save custom recipes, and use AI to generate new recipes on demand.", "problem": "Home cooks often want instant recipe ideas from the ingredients they have on hand alongside a personal cookbook.", "idea": "Combine custom recipe creation, smart search, and AI-powered recipe generation inside a single Flutter mobile app.", "features": ["AI-assisted recipe generation from ingredients and user prompts", "Fast recipe search with step-by-step preparation guides", "Create, edit, and organize personal recipes", "Fluid cross-platform animations built with Flutter & Dart"]}, {"slug": "connect-hub", "title": "ConnectHub Social Platform", "category": "Node.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Full-stack social feed & reactions", "image": "images/connecthub.jpeg", "url": "https://github.com/UzairBaig991/Connect-Hub", "repoUrl": "https://github.com/UzairBaig991/Connect-Hub", "role": "Solo Full-Stack Developer", "tags": ["Node.js", "React.js", "Tailwind CSS", "Full-Stack"], "summary": "Social media platform built with Node.js, React.js, and Tailwind CSS where users publish posts, interact, and react with likes and dislikes.", "problem": "Modern social feeds require responsive UI state updates and clean backend API synchronization for user interactions.", "idea": "Create a full-stack community platform using React.js, Tailwind CSS, and Node.js supporting posts, feeds, and instant reactions.", "features": ["Interactive community feed with post publishing", "Like and dislike reaction system with instant UI feedback", "Responsive component design styled with Tailwind CSS", "RESTful Node.js backend architecture"]}, {"slug": "stockwise-ai", "title": "StockWise AI — Stock & Market Predictor", "category": "Python", "group": "AI & FinTech", "year": "2026", "stage": "Completed", "highlight": "AI-driven market analytics & forecasting", "image": "images/stockwise-ai.jpeg", "url": "https://github.com/UzairBaig991/StockWise-AI", "repoUrl": "https://github.com/UzairBaig991/StockWise-AI", "role": "Solo AI & Python Developer", "tags": ["Python", "AI / ML", "Financial Analytics", "Forecasting"], "summary": "AI-powered stock analysis and market trend prediction platform built in Python using technical indicators and machine learning models.", "problem": "Retail traders struggle to synthesize historical price action, momentum indicators, and trend signals quickly.", "idea": "Engineer an AI-driven market intelligence engine in Python that evaluates multi-horizon stock trends and confidence scores.", "features": ["Time-series trend forecasting and momentum signal scoring", "Automated technical indicator pipeline (RSI, MACD, EMA)", "Clean data visualization and predictive confidence metrics", "Modular Python machine learning architecture"]}, {"slug": "autoflow-automation", "title": "AutoFlow — Workflow Automation Engine", "category": "TypeScript", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Visual pipeline & task automation", "image": "images/autoflow.jpeg", "url": "https://github.com/UzairBaig991/AutoFlow", "repoUrl": "https://github.com/UzairBaig991/AutoFlow", "role": "Solo Full-Stack Developer", "tags": ["TypeScript", "React.js", "Workflow Engine", "Automation"], "summary": "TypeScript workflow automation platform for designing, connecting, and executing multi-step digital pipelines and automated tasks.", "problem": "Repetitive development and business tasks waste hours when triggers and actions are not connected in a unified pipeline.", "idea": "Build a strongly-typed workflow automation engine in TypeScript where triggers, conditions, and actions execute reliably.", "features": ["Node-based workflow pipeline builder and execution engine", "Event-driven triggers with retry and error-handling logic", "End-to-end TypeScript type safety across pipeline steps", "Real-time execution logs and latency telemetry"]}, {"slug": "pharmacare-portal", "title": "PharmaCare — Digital Pharmacy Platform", "category": "Node.js", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Live Vercel healthcare & medicine portal", "image": "images/pharmacare-web.jpeg", "url": "https://pharmacare-woad.vercel.app", "repoUrl": "https://github.com/UzairBaig991/pharmacare", "role": "Solo Full-Stack Developer", "tags": ["JavaScript", "Web App", "Healthcare", "Vercel Live"], "summary": "Live web-based digital pharmacy and healthcare portal deployed on Vercel for browsing medicines, healthcare products, and prescriptions.", "problem": "Patients need a fast, accessible web portal to browse verified medicines, check availability, and order healthcare essentials online.", "idea": "Build and deploy PharmaCare as a responsive modern web application on Vercel with instant search and cart flows.", "features": ["Live production deployment on Vercel (pharmacare-woad.vercel.app)", "Interactive medicine catalog with category filtering and search", "Streamlined prescription and healthcare cart workflow", "Responsive healthcare UI across desktop and mobile browsers"]}, {"slug": "royalludo-game", "title": "RoyalLudo — Multiplayer Board Game", "category": "TypeScript", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Interactive 4-player turn & dice engine", "image": "images/royalludo.jpeg", "url": "https://github.com/UzairBaig991/RoyalLudo", "repoUrl": "https://github.com/UzairBaig991/RoyalLudo", "role": "Solo Game & Frontend Developer", "tags": ["TypeScript", "Game Engine", "State Machine", "Interactive UI"], "summary": "Full-featured 4-player Ludo board game engineered in TypeScript with deterministic finite-state turn logic, dice physics, and token collision rules.", "problem": "Recreating classic 4-player Ludo in the browser requires strict state-machine validation for safe zones, captures, bonus rolls, and home paths.", "idea": "Architect a clean TypeScript game engine for RoyalLudo with smooth token movement animations and rule enforcement.", "features": ["Complete 4-player Ludo ruleset including safe stars, captures, and extra turns", "Deterministic TypeScript state machine managing turns and valid moves", "Animated dice rolling and token path stepping", "Responsive royal-themed board graphics"]}, {"slug": "ludoverse-arena", "title": "LudoVerse — Modern Ludo Arena", "category": "TypeScript", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Real-time match arena & board physics", "image": "images/ludoverse.jpeg", "url": "https://github.com/UzairBaig991/LudoVerse", "repoUrl": "https://github.com/UzairBaig991/LudoVerse", "role": "Solo TypeScript Developer", "tags": ["TypeScript", "React", "Multiplayer UI", "Game Logic"], "summary": "Next-generation LudoVerse match platform built with TypeScript featuring arena lobbies, customizable match timers, and vector board rendering.", "problem": "Casual board game players want a fast, modern arena UI with customizable match modes (2P/4P) and instant turn feedback.", "idea": "Build LudoVerse in TypeScript with modular board rendering, turn timers, and interactive player HUDs.", "features": ["2-Player and 4-Player arena match modes with turn countdown timers", "Crisp vector board grid and smooth token transitions", "Strongly-typed game action dispatcher in TypeScript", "Interactive scoreboard and match summary screen"]}, {"slug": "ecoswap-flutter", "title": "EcoSwap — Sustainable Item Exchange App", "category": "Flutter", "group": "Mobile", "year": "2026", "stage": "Completed", "highlight": "Eco-friendly peer-to-peer swap marketplace", "image": "images/ecoswap.jpeg", "url": "https://github.com/UzairBaig991/EcoSwap-MAD-Project", "repoUrl": "https://github.com/UzairBaig991/EcoSwap-MAD-Project", "role": "Solo Flutter Developer", "tags": ["Flutter", "Dart", "Mobile App", "Sustainability"], "summary": "Cross-platform Flutter mobile application enabling users to swap pre-loved items sustainably instead of discarding them.", "problem": "Consumer waste grows when reusable electronics, books, and household items are thrown away instead of exchanged locally.", "idea": "Build EcoSwap for Mobile Application Development (MAD) using Flutter and Dart so users can list items and propose cashless swaps.", "features": ["Item listing feed with eco-categories and condition badges", "Peer-to-peer swap proposal and matching workflow", "Cross-platform iOS and Android UI built with Flutter & Dart", "Clean green-tech aesthetic promoting circular economy habits"]}, {"slug": "maze-solver", "title": "Maze Solver (DFS & BFS)", "category": "DSA", "group": "Core CS", "year": "2025", "stage": "Completed", "highlight": "Visual graph pathfinding engine", "image": "images/maze-solver.png", "url": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1", "repoUrl": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1", "role": "Solo Algorithm Developer", "tags": ["Python", "DSA", "DFS", "BFS", "Graph Algorithms"], "summary": "Visual maze solver using Depth-First Search (DFS) and Breadth-First Search (BFS) graph traversal algorithms in Python.", "problem": "Comparing shortest-path optimality (BFS) against deep branch exploration (DFS) is far clearer when visualized step by step on a grid graph.", "idea": "Implement an interactive visual maze solver in Python that animates DFS and BFS graph traversal side by side.", "features": ["Visual comparison of Depth-First Search (stack) and Breadth-First Search (queue)", "Real-time rendering of visited cells, frontier nodes, and shortest path", "Demonstrates time and space complexity trade-offs in graph theory", "Clean modular Python data structures"]}, {"slug": "pdfforge-toolkit", "title": "PDFForge — Document & PDF Toolkit", "category": "PHP", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Server-side PDF generation & processing", "image": "images/pdfforge.jpeg", "url": "https://github.com/UzairBaig991/PDFForge", "repoUrl": "https://github.com/UzairBaig991/PDFForge", "role": "Solo Backend & PHP Developer", "tags": ["PHP", "Document Processing", "PDF Engine", "Web Utility"], "summary": "PHP web toolkit for generating, formatting, watermarking, and exporting dynamic PDF documents on the server.", "problem": "Businesses and students frequently need a fast web utility to generate structured PDF reports and transform document templates.", "idea": "Engineer PDFForge in PHP to handle server-side document templating, watermarking, and instant PDF streaming.", "features": ["Dynamic HTML/template-to-PDF generation in PHP", "Custom watermarking, metadata stamping, and page formatting", "Fast server-side streaming for instant browser downloads", "Clean web dashboard for document upload and export"]}, {"slug": "os-simulator-kernel", "title": "OS Simulator — CPU & Memory Visualizer", "category": "HTML/JS", "group": "Core CS", "year": "2026", "stage": "Completed", "highlight": "Interactive CPU scheduling & paging simulator", "image": "images/os-simulator.jpeg", "url": "https://github.com/UzairBaig991/OS-Simulator", "repoUrl": "https://github.com/UzairBaig991/OS-Simulator", "role": "Solo Systems & JS Developer", "tags": ["JavaScript", "Operating Systems", "CPU Scheduling", "Simulation"], "summary": "Interactive Operating Systems simulator in JavaScript visualizing CPU scheduling algorithms (Round Robin, SJF, FCFS, Priority) and memory paging.", "problem": "Operating system kernel concepts like context switching, turnaround time, and page faults are difficult to grasp from static tables.", "idea": "Build a browser-based OS Simulator that animates Gantt charts, ready queues, and page replacement frames tick by tick.", "features": ["Live Gantt chart animation for FCFS, SJF, Priority, and Round Robin", "Automatic calculation of Waiting Time, Turnaround Time, and CPU Utilization", "Virtual memory page fault visualizer (FIFO & LRU paging)", "Interactive process creation with custom burst and arrival times"]}, {"slug": "lexical-analyzer-cpp", "title": "Lexical Analyzer — C++ Compiler Scanner", "category": "C++", "group": "Core CS", "year": "2026", "stage": "Completed", "highlight": "Source code scanner & token stream parser", "image": "images/lexical-analyzer.jpeg", "url": "https://github.com/UzairBaig991/Lexical-Analyzer", "repoUrl": "https://github.com/UzairBaig991/Lexical-Analyzer", "role": "Solo Systems C++ Developer", "tags": ["C++", "Compiler Construction", "Automata / DFA", "Lexical Analysis"], "summary": "C++ Lexical Analyzer implementing deterministic finite automata (DFA) to scan source code into classified token streams and symbol tables.", "problem": "The first phase of any compiler must reliably strip comments/whitespace, recognize keywords, identifiers, literals, and operators, and flag lexical errors.", "idea": "Build a fast, zero-dependency C++ lexical scanner that outputs categorized lexemes, line/column diagnostics, and symbol table entries.", "features": ["DFA-driven character stream scanner written in modern C++", "Classifies keywords, identifiers, numeric/string literals, operators, and delimiters", "Generates a structured Symbol Table with line and column tracking", "Detects and reports invalid lexemes and unterminated tokens"]}, {"slug": "voice-assistant-web", "title": "Browser AI Voice Assistant", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Web Speech API voice command assistant", "image": "images/voice-assistant.jpeg", "url": "https://github.com/UzairBaig991/Web-Programming-LabTask-VoiceAssistant", "repoUrl": "https://github.com/UzairBaig991/Web-Programming-LabTask-VoiceAssistant", "role": "Solo Frontend Developer", "tags": ["JavaScript", "Web Speech API", "Voice UI", "HTML5"], "summary": "Interactive browser voice assistant using the Web Speech API for real-time speech-to-text command recognition and spoken audio responses.", "problem": "Hands-free web navigation requires accurate browser speech recognition paired with natural speech synthesis feedback.", "idea": "Combine Web Speech Recognition and Speech Synthesis APIs with an animated audio waveform UI in JavaScript.", "features": ["Real-time speech-to-text transcription in the browser", "Intent parsing for time queries, web searches, and navigation commands", "Spoken voice responses via SpeechSynthesis API", "Reactive audio wave visualizer during active listening"]}, {"slug": "cadence-web-suite", "title": "Cadence — Interactive Web UI Suite", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Modern responsive web interface & workflow", "image": "images/cadence-web.jpeg", "url": "https://github.com/UzairBaig991/Web-Programming-lab-Task-Cadence", "repoUrl": "https://github.com/UzairBaig991/Web-Programming-lab-Task-Cadence", "role": "Solo Frontend Developer", "tags": ["HTML5", "CSS3", "JavaScript", "Responsive Design"], "summary": "Modern responsive web interface crafted with semantic HTML5, custom CSS Grid layouts, and interactive JavaScript components.", "problem": "Crafting polished web interfaces without heavy frameworks requires mastery of modern CSS layout primitives and clean DOM scripting.", "idea": "Design and build Cadence as a showcase of clean typography, fluid CSS Grid responsiveness, and smooth micro-interactions.", "features": ["Fluid responsive layout built with CSS Grid and Flexbox", "Interactive tabbed panels and dynamic DOM state updates", "Accessible semantic HTML5 structure", "Zero external framework overhead"]}, {"slug": "artificial-intelligence-lab", "title": "Artificial Intelligence Lab Suite", "category": "Python", "group": "Core CS", "year": "2026", "stage": "Completed", "highlight": "Search agents, heuristics & AI algorithms", "image": "images/ai-lab.jpeg", "url": "https://github.com/UzairBaig991/Artificial-Intelligence-Lab", "repoUrl": "https://github.com/UzairBaig991/Artificial-Intelligence-Lab", "role": "Solo Python & AI Developer", "tags": ["Python", "Artificial Intelligence", "A* Search", "Heuristic Agents"], "summary": "Comprehensive Python repository of Artificial Intelligence algorithms including uninformed/informed search (BFS, DFS, A*), heuristics, and intelligent agents.", "problem": "Mastering foundational AI requires implementing search trees, heuristic evaluation functions, and adversarial game agents from scratch.", "idea": "Build a clean, well-documented collection of Python AI implementations covering state-space search and agent decision-making.", "features": ["Uninformed and informed search algorithms (BFS, DFS, UCS, Greedy, A*)", "Adversarial search and heuristic evaluation experiments in Python", "Knowledge representation and rule-based agent tasks", "Developed for BS Software Engineering Artificial Intelligence coursework"]}, {"slug": "hci-computer-graphics", "title": "HCI & Computer Graphics Showcase", "category": "HTML/JS", "group": "Core CS", "year": "2025", "stage": "Completed", "highlight": "Interactive human-computer interface & graphics", "image": "images/hci-graphics.jpeg", "url": "https://github.com/UzairBaig991/HCI-And-ComputerGraphics", "repoUrl": "https://github.com/UzairBaig991/HCI-And-ComputerGraphics", "role": "Solo Developer", "tags": ["HTML5 Canvas", "Computer Graphics", "HCI Design", "JavaScript"], "summary": "Interactive explorations in Human-Computer Interaction (HCI) and 2D/3D browser Computer Graphics using HTML5, CSS3, and JavaScript.", "problem": "Bridging visual rendering algorithms with ergonomic user interface design requires applying both computer graphics math and HCI usability heuristics.", "idea": "Combine interactive geometric rendering experiments with user-centered interface prototypes.", "features": ["Interactive 2D/3D vector and canvas graphics rendering", "Usability-focused UI prototypes following Nielsen and Fitts's Law principles", "Smooth visual feedback and color contrast ergonomics", "Built for HCI & Computer Graphics coursework"]}, {"slug": "dsa-final-project-cpp", "title": "DSA Final Project — Advanced C++ Structures", "category": "DSA", "group": "Core CS", "year": "2024", "stage": "Completed", "highlight": "Collaborative C++ trees, graphs & hashing suite", "image": "images/dsa-final-project.jpeg", "url": "https://github.com/UzairBaig991/DSA-Final-Project-Collaboration", "repoUrl": "https://github.com/UzairBaig991/DSA-Final-Project-Collaboration", "role": "Core C++ & Algorithm Developer", "tags": ["C++", "DSA", "Trees & Graphs", "Hash Tables"], "summary": "Collaborative Data Structures & Algorithms capstone project in C++ implementing balanced trees, shortest-path graph algorithms, and hash tables.", "problem": "High-performance data indexing and routing require combining logarithmic tree lookups, O(1) hashing, and weighted graph traversal.", "idea": "Collaborate via Git/GitHub to engineer a unified C++ data structures application benchmarked for time and memory efficiency.", "features": ["Custom C++ implementations of Trees, Graphs, Queues, Stacks, and Hash Maps", "Shortest-path and sorting algorithms optimized for large datasets", "Collaborative Git branching and pull-request workflow", "Built for Data Structures & Algorithms final evaluation"]}, {"slug": "prescripto-doctor-appointment", "title": "Prescripto — Doctor Appointment", "category": "Node.js", "group": "Web", "year": "2025", "stage": "Completed", "highlight": "Patient & schedule management", "image": "images/doctor-appointment.jpeg", "url": "https://github.com/UzairBaig991/Prescripto", "repoUrl": "https://github.com/UzairBaig991/Prescripto", "role": "Group Project Lead / Developer", "tags": ["Node.js", "JavaScript", "Healthcare", "Scheduling"], "summary": "Complete doctor appointment management system with slot scheduling, patient records, and appointment tracking.", "problem": "Clinics and patients need a reliable system to coordinate doctor availability, bookings, and visit tracking without double-booking.", "idea": "Build a structured appointment scheduling and patient management system powered by Node.js.", "features": ["Doctor slot scheduling and availability management", "Patient registration and medical appointment history", "Status tracking for booked, completed, and cancelled visits", "Built collaboratively using Git & GitHub workflows"]}, {"slug": "medicare-pharmacy-app", "title": "MediCare — Pharmacy Android App", "category": "Kotlin", "group": "Mobile", "year": "2026", "stage": "Completed", "highlight": "Location-aware pharmacy mobile app", "image": "images/pharmacy-app.jpeg", "url": "https://github.com/UzairBaig991/MediCare-", "repoUrl": "https://github.com/UzairBaig991/MediCare-", "role": "Solo Android Developer", "tags": ["Kotlin", "Android", "Location Services", "Healthcare"], "summary": "Interactive Android pharmacy application built in Kotlin featuring medicine lookup, location-based services, and user content.", "problem": "Patients need fast mobile access to pharmacy catalogs and location-aware healthcare services.", "idea": "Develop a native Kotlin Android application connecting users with pharmacy inventory and location features.", "features": ["Medicine catalog browsing and instant search", "Location-based pharmacy lookup and details", "Accessible mobile UI engineered in Kotlin", "Built during Android App Development specialization"]}, {"slug": "crypto-currency-android", "title": "Crypto Currency Tracker", "category": "Kotlin", "group": "Mobile", "year": "2026", "stage": "Completed", "highlight": "Live crypto prices & portfolio", "image": "images/crypto-currency.jpeg", "url": "https://github.com/UzairBaig991/Crypto-Currency", "repoUrl": "https://github.com/UzairBaig991/Crypto-Currency", "role": "Solo Android Developer", "tags": ["Kotlin", "Android", "Real-Time Data", "FinTech"], "summary": "Interactive cryptocurrency Android app in Kotlin with real-time price tracking and portfolio management features.", "problem": "Crypto investors need a fast mobile dashboard to monitor live market prices and track portfolio allocation.", "idea": "Build a native Kotlin Android app with real-time coin metrics and portfolio tracking.", "features": ["Real-time cryptocurrency price monitoring and market trends", "Personal portfolio tracking and holding summaries", "High-contrast financial UI for Android", "Native Kotlin implementation"]}, {"slug": "quiz-android-app", "title": "Quiz Android App", "category": "Kotlin", "group": "Mobile", "year": "2026", "stage": "Completed", "highlight": "Adaptive quizzes & progress tracking", "image": "images/quiz-app.jpeg", "url": "https://github.com/UzairBaig991/Quiz-Android-App", "repoUrl": "https://github.com/UzairBaig991/Quiz-Android-App", "role": "Solo Android Developer", "tags": ["Kotlin", "Android", "EdTech", "State Management"], "summary": "Interactive quiz application for Android with personalized question recommendations and user progress tracking.", "problem": "Students retain more knowledge when quizzes provide instant feedback, score analytics, and tailored question sets.", "idea": "Create a native Kotlin quiz app with adaptive question flows and progress tracking.", "features": ["Interactive multiple-choice quiz engine on Android", "Personalized question recommendations based on performance", "User score history and progress tracking", "Smooth native Android transitions"]}, {"slug": "invoice-maker-mobile", "title": "Invoice Maker Mobile App", "category": "React Native", "group": "Mobile", "year": "2026", "stage": "Live", "highlight": "Mobile-first invoice generator", "image": "images/invoice-maker.jpeg", "url": "https://comfy-dusk-ca6f8c.netlify.app/", "repoUrl": "https://github.com/UzairBaig991", "role": "Solo Mobile Developer", "tags": ["React Native", "JavaScript", "Mobile", "FinTech"], "summary": "Cross-platform mobile invoice creation and management application built with React Native.", "problem": "Freelancers and mobile business owners need to create and share client invoices directly from their smartphones.", "idea": "Build a lightweight React Native app for creating, previewing, and managing invoices on the go.", "features": ["Mobile-friendly form for itemized invoice creation", "Automatic tax, discount, and subtotal calculations", "Invoice history and status management", "Live interactive preview deployed on Netlify"]}, {"slug": "type-forge-typing-app", "title": "Type Forge — Typing App", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Live WPM & accuracy trainer", "image": "images/Typing-aaplication.jpeg", "url": "https://uzairbaig991.github.io/Type-Forge/", "repoUrl": "https://github.com/UzairBaig991/Type-Forge", "role": "Solo Frontend Developer", "tags": ["JavaScript", "HTML5", "CSS3", "EdTech"], "summary": "Interactive typing application designed to help beginners and developers improve their typing speed (WPM) and accuracy.", "problem": "Improving keyboard speed and accuracy requires real-time character validation and live WPM telemetry.", "idea": "Build a browser-based typing trainer with live keystroke highlighting, timer modes, and accuracy scoring.", "features": ["Real-time character-by-character accuracy highlighting", "Live Words Per Minute (WPM) and error rate calculation", "Practice passages tailored for beginners and programmers", "Live web app hosted on GitHub Pages"]}, {"slug": "movie-recommendation-system", "title": "Movie Recommendation System", "category": "Node.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Personalized movie discovery", "image": "images/movie-recommendation.jpeg", "url": "https://github.com/UzairBaig991/Movie-Recommendation-System", "repoUrl": "https://github.com/UzairBaig991/Movie-Recommendation-System", "role": "Solo Full-Stack Developer", "tags": ["Node.js", "JavaScript", "Recommendation Engine", "Web"], "summary": "Interactive movie recommendation system in Node.js with personalized suggestions and user reviews.", "problem": "Viewers spend too much time browsing huge catalogs without tailored movie recommendations.", "idea": "Create a Node.js web platform that surfaces personalized movie suggestions alongside user ratings and reviews.", "features": ["Personalized movie suggestions based on genres and user preferences", "User review and rating submission system", "Rich movie detail cards and instant search", "Node.js backend routing and data handling"]}, {"slug": "syntecxhub-ecommerce-store", "title": "Syntecxhub E-Commerce Store", "category": "Node.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Two-sided buyer & seller marketplace", "image": "images/e-commerce-store.jpeg", "url": "https://github.com/UzairBaig991/Syntecxhub-E-commerce-store", "repoUrl": "https://github.com/UzairBaig991/Syntecxhub-E-commerce-store", "role": "Solo Full-Stack Developer", "tags": ["Node.js", "JavaScript", "E-Commerce", "Full-Stack"], "summary": "Full-featured Node.js e-commerce store where users can list products for sale and purchase items across categories.", "problem": "Online marketplaces require both seller inventory listing workflows and smooth buyer cart/checkout experiences.", "idea": "Engineer a Node.js e-commerce platform supporting product listings, catalog discovery, and shopping cart checkout.", "features": ["Product listing and inventory management for sellers", "Buyer storefront with search and category filtering", "Shopping cart and order processing", "Built with Node.js and modern web standards"]}, {"slug": "weather-app-react", "title": "Weather Forecast App", "category": "React.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Real-time weather & forecasts", "image": "images/weather-app.jpeg", "url": "https://github.com/UzairBaig991/Syntecxhub-Weather-App", "repoUrl": "https://github.com/UzairBaig991/Syntecxhub-Weather-App", "role": "Solo Frontend Developer", "tags": ["React.js", "Weather API", "JavaScript", "Frontend"], "summary": "React.js weather application providing live current conditions, temperature metrics, and multi-day forecasts.", "problem": "Users want an instant, clutter-free dashboard of current weather conditions and upcoming forecasts for any city worldwide.", "idea": "Build a fast React.js weather application powered by live meteorological API data.", "features": ["Global city search with instant weather lookup", "Current temperature, humidity, and wind speed telemetry", "Forecast overview with dynamic weather state icons", "Component-driven React.js architecture"]}, {"slug": "notes-app-react", "title": "React Notes App", "category": "React.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Fast note capture & organization", "image": "images/notes-app.jpeg", "url": "https://github.com/UzairBaig991/Syntecxhub-Notes-App", "repoUrl": "https://github.com/UzairBaig991/Syntecxhub-Notes-App", "role": "Solo Frontend Developer", "tags": ["React.js", "JavaScript", "CRUD", "Productivity"], "summary": "Clean React.js notes application with instant create, edit, search, and delete functionality.", "problem": "Capturing and organizing notes in the browser should be instantaneous without page reloads.", "idea": "Create a responsive React.js single-page notes manager with stateful CRUD operations.", "features": ["Create, edit, and delete notes with zero latency", "Responsive card grid layout", "Persistent state management in React.js", "Distraction-free writing interface"]}, {"slug": "user-management-system", "title": "User Management System", "category": "Node.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Admin CRUD directory & roles", "image": "images/user-management-app.jpeg", "url": "https://github.com/UzairBaig991/Syntecxhub-User-Management-System", "repoUrl": "https://github.com/UzairBaig991/Syntecxhub-User-Management-System", "role": "Solo Full-Stack Developer", "tags": ["Node.js", "JavaScript", "CRUD", "Admin Panel"], "summary": "Node.js user management application with full create, view, edit, and delete functionality for user directories.", "problem": "Web platforms need a reliable administrative interface to manage user accounts, contact records, and roles.", "idea": "Build a clean Node.js CRUD application for managing user profiles and directory records.", "features": ["Full CRUD operations (Create, Read, Update, Delete) for user accounts", "Structured directory table with quick actions", "Form validation and clean REST routing", "Powered by Node.js"]}, {"slug": "task-management-app", "title": "Task Management App", "category": "Node.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Workflow & task tracker", "image": "images/task-manager.jpeg", "url": "https://github.com/UzairBaig991/Syntecxhub-Task-Manager", "repoUrl": "https://github.com/UzairBaig991/Syntecxhub-Task-Manager", "role": "Solo Full-Stack Developer", "tags": ["Node.js", "JavaScript", "Productivity", "CRUD"], "summary": "Node.js task management application with create, edit, status toggle, and delete functionality.", "problem": "Keeping track of daily deliverables and priorities requires a structured, distraction-free task board.", "idea": "Develop a streamlined task manager in Node.js to organize, update, and complete tasks efficiently.", "features": ["Create, update, and remove tasks seamlessly", "Track completion status and priorities", "Clean productivity-focused UI", "Node.js backend architecture"]}, {"slug": "camping-outdoor-planner", "title": "Camping & Outdoor Planner", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Location-based adventure planner", "image": "images/camping-app.jpeg", "url": "https://uzairbaig991.github.io/Camping-and-Outdoor-Adventure-Planner/", "repoUrl": "https://github.com/UzairBaig991/Camping-and-Outdoor-Adventure-Planner", "role": "Solo Frontend Developer", "tags": ["JavaScript", "HTML5", "CSS3", "Travel"], "summary": "Interactive camping and outdoor adventure application with location-based features and trip planning tools.", "problem": "Outdoor enthusiasts need a single place to organize camping trips, gear checklists, and destination details.", "idea": "Create an interactive web planner for outdoor adventures and campsite organization.", "features": ["Interactive trip and campsite planning interface", "Location-based outdoor adventure discovery", "User-generated notes and gear checklists", "Live demo deployed on GitHub Pages"]}, {"slug": "recupaws-animal-charity", "title": "RecuPaws — Animal Charity Site", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Donation & volunteer platform", "image": "images/animal-charity.jpeg", "url": "https://uzairbaig991.github.io/RecuPaws/", "repoUrl": "https://github.com/UzairBaig991/RecuPaws", "role": "Solo Frontend Developer", "tags": ["HTML5", "CSS3", "JavaScript", "Non-Profit UI"], "summary": "Interactive animal charity website featuring rescue stories, donation options, and volunteer registration.", "problem": "Animal rescue organizations need an empathetic, trustworthy web presence to drive adoptions, donations, and volunteer sign-ups.", "idea": "Design and build RecuPaws with clear calls-to-action for donors and community volunteers.", "features": ["Interactive donation and pet sponsorship flows", "Volunteer registration and rescue showcase", "Responsive layout across mobile and desktop", "Deployed live on GitHub Pages"]}, {"slug": "gym-website", "title": "Fitness & Gym Website", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Class schedules & trainer profiles", "image": "images/gym-website.jpeg", "url": "https://uzairbaig991.github.io/Gym-Website/", "repoUrl": "https://github.com/UzairBaig991/Gym-Website", "role": "Solo Frontend Developer", "tags": ["HTML5", "CSS3", "JavaScript", "Landing Page"], "summary": "Complete interactive gym website showcasing fitness programs, class schedules, membership tiers, and trainer profiles.", "problem": "Fitness centers need an energetic web presence where prospective members can explore class timings and trainer credentials.", "idea": "Build a modern responsive gym web experience with interactive schedules and program breakdowns.", "features": ["Interactive weekly class schedule", "Trainer profiles and fitness program showcase", "Membership inquiry and responsive mobile layout", "Live on GitHub Pages"]}, {"slug": "time-zone-converter", "title": "Time Zone Converter App", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Global clock & instant conversion", "image": "images/time-zone.jpeg", "url": "https://uzairbaig991.github.io/Time-Zone-Converter/", "repoUrl": "https://github.com/UzairBaig991/Time-Zone-Converter", "role": "Solo Frontend Developer", "tags": ["JavaScript", "HTML5", "CSS3", "Utility"], "summary": "Interactive time zone converter app displaying live world clocks and instant cross-timezone conversion.", "problem": "Distributed teams and students collaborating internationally constantly need to convert times across time zones.", "idea": "Build a clean browser utility for comparing live global times and converting hours instantly.", "features": ["Instant time conversion across global time zones", "Live current time display for selected regions", "Responsive, zero-dependency JavaScript implementation", "Live on GitHub Pages"]}, {"slug": "expense-tracker-web", "title": "Expense Tracker App", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Personal budget & spend ledger", "image": "images/expense-tracker.jpeg", "url": "https://uzairbaig991.github.io/Syntecxhub-Expense-Tracker/", "repoUrl": "https://github.com/UzairBaig991/Syntecxhub-Expense-Tracker", "role": "Solo Frontend Developer", "tags": ["JavaScript", "HTML5", "CSS3", "FinTech"], "summary": "Interactive expense tracking web application with add, delete, category breakdown, and balance summary features.", "problem": "Tracking daily expenses manually is tedious without an immediate visual summary of income versus spending.", "idea": "Build an intuitive browser-based expense ledger that updates totals and history in real time.", "features": ["Add and categorize expenses with instant balance updates", "Delete and review historical transactions", "Clean financial summary cards", "Hosted live on GitHub Pages"]}, {"slug": "music-playlist-web", "title": "Music Playlist Web Player", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Interactive browser audio playlist", "image": "images/music-Playlist.jpeg", "url": "https://uzairbaig991.github.io/MUSIC-PLAYLIST/", "repoUrl": "https://github.com/UzairBaig991/MUSIC-PLAYLIST", "role": "Solo Frontend Developer", "tags": ["JavaScript", "HTML5 Audio", "CSS3", "Media"], "summary": "Interactive web music playlist with add, delete, search, and audio playback functionality.", "problem": "Managing and playing a custom queue of tracks in the browser requires smooth DOM and audio state synchronization.", "idea": "Create a sleek web music player supporting dynamic playlist search, track management, and playback controls.", "features": ["Play, pause, skip, and scrub audio tracks", "Add, delete, and search songs in the active playlist", "Responsive player interface", "Live on GitHub Pages"]}, {"slug": "simple-todo-web", "title": "Simple To-Do Web App", "category": "HTML/JS", "group": "Web", "year": "2026", "stage": "Live", "highlight": "Minimalist daily task checklist", "image": "images/simple-to-do.jpeg", "url": "https://uzairbaig991.github.io/Simple-To-Do-App/", "repoUrl": "https://github.com/UzairBaig991/Simple-To-Do-App", "role": "Solo Frontend Developer", "tags": ["JavaScript", "HTML5", "CSS3", "Productivity"], "summary": "Interactive browser to-do application with task creation, completion toggling, and tracking.", "problem": "Users often want a fast, zero-setup checklist right in their browser to track daily tasks.", "idea": "Build a minimalist HTML/CSS/JS to-do app with instant keyboard-friendly task entry.", "features": ["Quick task addition and completion toggling", "Clean minimalist task list UI", "Lightweight zero-dependency JavaScript", "Live on GitHub Pages"]}, {"slug": "todo-list-nodejs", "title": "Node.js To-Do List App", "category": "Node.js", "group": "Web", "year": "2026", "stage": "Completed", "highlight": "Full-stack task persistence", "image": "images/Simple To-do App.jpeg", "url": "https://github.com/UzairBaig991/To-Do-App", "repoUrl": "https://github.com/UzairBaig991/To-Do-App", "role": "Solo Full-Stack Developer", "tags": ["Node.js", "JavaScript", "HTML/CSS", "CRUD"], "summary": "Interactive full-stack to-do list application powered by Node.js with task management and tracking.", "problem": "Persisting task lists on a backend server demonstrates full-stack request/response handling and state management.", "idea": "Combine a clean HTML/CSS/JS frontend with a Node.js backend for persistent task management.", "features": ["Server-backed task creation, updates, and deletion", "Interactive completion tracking", "Clean full-stack Node.js architecture", "Source code available on GitHub"]}, {"slug": "guess-the-number-game", "title": "Guess the Number Game", "category": "HTML/JS", "group": "Web", "year": "2024", "stage": "Completed", "highlight": "Interactive logic game & scoring", "image": "images/guess-the-number.jpeg", "url": "https://github.com/UzairBaig991/AnalysisofAlgorithmSE/blob/main/SemesterProject.html", "repoUrl": "https://github.com/UzairBaig991/AnalysisofAlgorithmSE", "role": "Solo Developer", "tags": ["JavaScript", "HTML5", "CSS3", "Game Logic"], "summary": "Interactive number guessing game built with HTML, CSS, and JavaScript featuring dynamic hints and score tracking.", "problem": "Creating engaging browser games requires responsive state feedback, attempt counters, and replayability.", "idea": "Design an interactive number guessing game with binary-search-inspired high/low hints and score tracking.", "features": ["Dynamic high/low hint feedback on every guess", "Attempt counter and high-score tracking", "Instant game reset and replay flow", "Built for Analysis of Algorithms coursework"]}, {"slug": "restaurant-system-assembly", "title": "Restaurant Management System", "category": "Assembly", "group": "Core CS", "year": "2024", "stage": "Completed", "highlight": "x86 Assembly low-level system", "image": "images/restaurant-system.jpeg", "url": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1/blob/main/3rd-Semester-COAL-Restaurant-System.asm", "repoUrl": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1", "role": "Solo Systems Developer", "tags": ["Assembly (x86)", "COAL", "Low-Level", "Control Flow"], "summary": "Complete console restaurant management system in Assembly language with time-based menus, order taking, and billing inquiry.", "problem": "Building multi-menu ordering and billing logic directly in Assembly language tests mastery of CPU registers, memory segments, and conditional branching.", "idea": "Implement a complete restaurant ordering and billing system in x86 Assembly for Computer Organization & Assembly Language (COAL).", "features": ["Time-based menu selection (breakfast, lunch, dinner)", "Interactive order placement and register-based arithmetic", "Low-level interrupt I/O and billing summary routines", "Deepened mastery of CPU control flow and memory layout"]}, {"slug": "banking-system-python", "title": "Banking System", "category": "Python", "group": "Core CS", "year": "2024", "stage": "Completed", "highlight": "Core banking ledger & transactions", "image": "images/banking-system.jpg", "url": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1/blob/main/3rd-Semester-SE-Banking-System.py", "repoUrl": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1", "role": "Solo Developer", "tags": ["Python", "File Handling", "OOP", "Console App"], "summary": "Complete console banking application in Python supporting account creation, deposits, withdrawals, and balance inquiries.", "problem": "Financial transaction systems must strictly validate balances, prevent overdrafts, and maintain accurate customer ledgers.", "idea": "Build a Python banking application simulating real-world account creation and transaction workflows.", "features": ["Account creation and customer record management", "Deposit and withdrawal processing with balance validation", "Instant balance inquiry and transaction summaries", "Clean modular Python implementation"]}, {"slug": "music-playlist-cpp", "title": "Music Playlist Manager (C++ OOP)", "category": "C++", "group": "Core CS", "year": "2024", "stage": "Completed", "highlight": "Object-oriented audio library", "image": "images/music-playlist.png", "url": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1", "repoUrl": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1", "role": "Solo C++ Developer", "tags": ["C++", "OOP", "Data Structures", "Classes"], "summary": "Object-oriented C++ playlist management system with add, delete, search, and playback simulation.", "problem": "Managing dynamic collections of songs cleanly requires solid encapsulation, classes, and linked data structures.", "idea": "Apply C++ Object-Oriented Programming principles to build a full-featured console playlist manager.", "features": ["Architected with C++ classes, encapsulation, and inheritance", "Add, remove, and search tracks across playlists", "Simulated playback and queue navigation", "Core Object-Oriented Programming milestone project"]}, {"slug": "employee-manager-cpp", "title": "Employee Manager System", "category": "C++", "group": "Core CS", "year": "2023", "stage": "Completed", "highlight": "First C++ CRUD & file system", "image": "images/employee-manager.jpg", "url": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1/blob/main/1st-Semester-Employee-System.cpp", "repoUrl": "https://github.com/UzairBaig991/ALLSOFTWAREPROJECTS1", "role": "Solo C++ Developer", "tags": ["C++", "CRUD", "File I/O", "Programming Fundamentals"], "summary": "Console application in C++ with full CRUD operations and file handling for managing employee records.", "problem": "Organizations need structured record systems to add, search, update, and remove employee data persistently.", "idea": "Build a complete C++ console CRUD application using file streams during 1st-semester Programming Fundamentals.", "features": ["Create, read, update, and delete employee records", "Persistent file storage using C++ fstream", "Fast ID lookup and record filtering", "Foundation project in C++ systems programming"]}];
 const BLOGS = [{"slug": "oop-through-real-projects", "title": "Understanding Object-Oriented Programming Through Real Projects", "category": "C++ & OOP", "dateLabel": "2026", "readTime": "4 min read", "image": "images/music-playlist.png", "summary": "How OOP concepts such as classes, objects, inheritance, and encapsulation were applied while building a Student Management System and Music Playlist Manager in C++.", "body": ["When learning Object-Oriented Programming (OOP) in C++, textbook definitions of encapsulation, inheritance, and polymorphism only truly click once you apply them to real software systems.", "While building my Music Playlist Manager and Employee/Student Management Systems, separating responsibilities into dedicated classes made the codebase dramatically easier to reason about, debug, and extend.", "Encapsulation protected internal state (such as track pointers and employee IDs) from accidental corruption, while clean public methods allowed new features—like multi-field search and sorting—to be added without rewriting core logic."]}, {"slug": "learning-dsa-solving-maze", "title": "Learning Data Structures by Solving a Maze", "category": "Algorithms & DSA", "dateLabel": "2025", "readTime": "5 min read", "image": "images/maze-solver.png", "summary": "A practical explanation of how DFS and BFS algorithms work, demonstrated through a Python-based Maze Solver project and how graph traversal improves problem-solving skills.", "body": ["Graph algorithms can feel abstract on a whiteboard, so I built a visual Maze Solver in Python to watch Depth-First Search (DFS) and Breadth-First Search (BFS) compete in real time.", "Representing the grid as an unweighted graph where each open corridor cell is a vertex made it immediately obvious how a stack-driven DFS dives deep down a single path, while a queue-driven BFS explores layer by layer to guarantee the shortest path.", "Seeing algorithmic complexity translate directly into visual search behavior sharpened my intuition for choosing the right data structure for every engineering problem."]}, {"slug": "designing-invoice-system-astraledger", "title": "Designing a Simple Invoice System for Small Businesses", "category": "Full-Stack Web", "dateLabel": "2026", "readTime": "4 min read", "image": "images/astraledger.jpeg", "summary": "The motivation and development process behind creating Astraledger, a web-based invoice management application supporting GST, service, and non-GST billing for shop owners.", "body": ["Small business and shop owners often get overwhelmed by bloated accounting suites when their daily need is straightforward: generate accurate GST, service, or non-GST bills quickly.", "While engineering Astraledger with Node.js, I focused on reducing the number of clicks required to create, calculate, and print an invoice.", "Working on a real-world billing problem taught me how much user empathy matters in software engineering—clean forms, instant tax math, and reliable record retrieval make all the difference."]}, {"slug": "journey-with-assembly-language", "title": "From Low-Level to High-Level Programming: My Journey with Assembly", "category": "Systems & COAL", "dateLabel": "2025", "readTime": "5 min read", "image": "images/restaurant-system.jpeg", "summary": "Implementing a complete Restaurant Management System in Assembly language and understanding low-level CPU control flow, registers, and memory concepts.", "body": ["Writing a complete Restaurant Management System in x86 Assembly language was one of the most rewarding challenges of my BS Software Engineering degree at Riphah International University.", "Without high-level abstractions, every menu prompt, time-based condition, and bill calculation had to be orchestrated through CPU registers, memory offsets, and conditional jumps.", "That low-level perspective permanently improved how I write high-level C++, Python, Kotlin, and JavaScript—because I always understand what the machine is doing underneath."]}, {"slug": "console-apps-programming-logic", "title": "Building Console Applications to Strengthen Programming Logic", "category": "Software Engineering", "dateLabel": "2024", "readTime": "3 min read", "image": "images/banking-system.jpg", "summary": "Why console-based applications like Banking Systems and record management software are essential for mastering pure programming logic before jumping into UI frameworks.", "body": ["Before diving into React.js, Flutter, or Kotlin Android UI development, building solid console applications in C++ and Python laid the foundation for my engineering mindset.", "In a console Banking System or Employee Manager, there is nowhere to hide flawed logic: your data validation, file streams, state transitions, and edge-case handling must be rock solid.", "Mastering core CRUD workflows and algorithmic thinking in the terminal made transitioning into full-stack web and mobile frameworks smooth and natural."]}, {"slug": "git-and-github-for-se-students", "title": "Why Git and GitHub Are Essential for Software Engineering Students", "category": "Workflow & Tooling", "dateLabel": "2026", "readTime": "3 min read", "image": "images/ERP-System.jpeg", "summary": "How version control improves project organization, team collaboration, and code safety across 31+ academic and internship software projects.", "body": ["Across more than 31 academic, solo, and internship projects—from C++ console tools to Prescripto, UzairMart, and Enterprise Flow ERP—Git and GitHub have been my safety net and portfolio backbone.", "Version control lets you experiment boldly with new features, collaborate cleanly on group projects, and maintain a transparent history of your growth as an engineer."]}];
 
 const ARROW_SVG = `<svg aria-hidden="true" fill="none" height="18" viewBox="0 0 24 24" width="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg>`;
@@ -678,8 +1154,14 @@ function renderHomePage() {
     <section class="hero" id="hero-sec">
       <div class="hero-grid-wrap">
         <div class="hero-inner">
-          <p class="eyebrow">Full-stack developer · Rawalpindi, Pakistan</p>
+          <p class="eyebrow"><span class="hero-role-cycler" id="hero-role-text">Full-Stack Developer</span><span class="typewriter-caret" aria-hidden="true"></span> · Rawalpindi, Pakistan</p>
           <h1><span>Uzair</span><span class="outline"><b>Baig</b></span></h1>
+          <div class="hero-badges">
+            <a href="#work" class="hero-badge"><i></i> 45+ Shipped Projects</a>
+            <a href="#about" class="hero-badge"><i></i> 2 Completed Internships</a>
+            <a href="#about" class="hero-badge"><i></i> BS SE @ Riphah (5th Sem)</a>
+            <a href="#about" class="hero-badge"><i></i> Cisco CPA C++ Certified</a>
+          </div>
         </div>
         ${render3DLogoStage()}
       </div>
@@ -697,7 +1179,7 @@ with C++, Python, React &amp; Kotlin.</p>
     <section class="sec statement tone-contrast reveal" style="--win:'about-me'">
       <p class="eyebrow">About me</p>
       <p class="statement-text" id="home-statement-text" style="--n:28">
-        ${wordsSpan("I'm a software engineering student at Riphah International University, with internship experience at Arch Technologies & Crixsoft Solution and 31+ hands-on projects across web, mobile and core CS.")}
+        ${wordsSpan("I'm a software engineering student at Riphah International University, with internship experience at Arch Technologies & Crixsoft Solution and 45+ hands-on projects across web, mobile and core CS.")}
       </p>
       <a class="btn" href="#about">${rollText('More about me')} ${ARROW_SVG}</a>
     </section>
@@ -711,7 +1193,7 @@ with C++, Python, React &amp; Kotlin.</p>
         ${featured.map((p, i) => renderWorkCard(p, i)).join('')}
       </div>
       <div class="sec-foot">
-        <a class="btn btn-primary" href="#work">${rollText('See all 31 projects')} ${ARROW_SVG}</a>
+        <a class="btn btn-primary" href="#work">${rollText('See all 45 projects')} ${ARROW_SVG}</a>
       </div>
     </section>
 
@@ -721,7 +1203,7 @@ with C++, Python, React &amp; Kotlin.</p>
       </header>
       <dl class="stats">
         <div>
-          <dt>31+</dt>
+          <dt>45+</dt>
           <dd>Software projects built across web, mobile, and core CS</dd>
         </div>
         <div>
@@ -746,36 +1228,36 @@ with C++, Python, React &amp; Kotlin.</p>
       </header>
       <div class="skill-groups">
         <div>
-          <h3>Languages</h3>
+          <h3>Languages (Click to filter projects)</h3>
           <div class="tag-row">
-            <span class="tag">C++</span>
-            <span class="tag">Python</span>
-            <span class="tag">JavaScript (ES6+)</span>
-            <span class="tag">Kotlin</span>
-            <span class="tag">Assembly (x86)</span>
-            <span class="tag">HTML5</span>
-            <span class="tag">CSS3</span>
+            <span class="tag" data-skill-filter="TypeScript">TypeScript<span class="tag-cnt">3</span></span>
+            <span class="tag" data-skill-filter="HTML/JS">JavaScript (ES6+)<span class="tag-cnt">13</span></span>
+            <span class="tag" data-skill-filter="Python">Python &amp; AI<span class="tag-cnt">3</span></span>
+            <span class="tag" data-skill-filter="C++">C++<span class="tag-cnt">3</span></span>
+            <span class="tag" data-skill-filter="Kotlin">Kotlin<span class="tag-cnt">5</span></span>
+            <span class="tag" data-skill-filter="PHP">PHP<span class="tag-cnt">1</span></span>
+            <span class="tag" data-skill-filter="Assembly">Assembly (x86)<span class="tag-cnt">1</span></span>
           </div>
         </div>
         <div>
           <h3>Web &amp; Mobile Frameworks</h3>
           <div class="tag-row">
-            <span class="tag">React.js</span>
-            <span class="tag">Node.js</span>
-            <span class="tag">React Native</span>
-            <span class="tag">Flutter</span>
-            <span class="tag">Tailwind CSS</span>
-            <span class="tag">REST APIs</span>
+            <span class="tag" data-skill-filter="Node.js">Node.js<span class="tag-cnt">10</span></span>
+            <span class="tag" data-skill-filter="React.js">React.js<span class="tag-cnt">2</span></span>
+            <span class="tag" data-skill-filter="Flutter">Flutter &amp; Dart<span class="tag-cnt">2</span></span>
+            <span class="tag" data-skill-filter="React Native">React Native<span class="tag-cnt">1</span></span>
+            <span class="tag" data-skill-filter="Node.js">Tailwind CSS</span>
+            <span class="tag" data-skill-filter="Node.js">REST APIs</span>
           </div>
         </div>
         <div>
-          <h3>Core CS &amp; Engineering</h3>
+          <h3>Core CS, AI &amp; Systems</h3>
           <div class="tag-row">
-            <span class="tag">OOP Concepts</span>
-            <span class="tag">DSA &amp; Algorithms</span>
-            <span class="tag">Graph Algorithms (DFS/BFS)</span>
-            <span class="tag">Database Management (DBMS)</span>
-            <span class="tag">Git &amp; GitHub</span>
+            <span class="tag" data-skill-filter="C++">OOP &amp; Compiler Lexer</span>
+            <span class="tag" data-skill-filter="DSA">DSA &amp; Graph Algorithms<span class="tag-cnt">2</span></span>
+            <span class="tag" data-skill-filter="Python">Artificial Intelligence &amp; ML</span>
+            <span class="tag" data-skill-filter="HTML/JS">OS &amp; Computer Graphics</span>
+            <span class="tag" data-skill-filter="All">Git &amp; GitHub<span class="tag-cnt">45</span></span>
           </div>
         </div>
       </div>
@@ -869,7 +1351,7 @@ function renderAboutPage() {
               <dd>Semester, BS Software Engineering</dd>
             </div>
             <div>
-              <dt>31+</dt>
+              <dt>45+</dt>
               <dd>Academic &amp; full-stack projects</dd>
             </div>
             <div>
@@ -1099,7 +1581,7 @@ function renderAboutPage() {
           <div class="timeline-row">
             <span class="timeline-period">2023 – 2026</span>
             <span class="timeline-head">
-              <h3>31+ Completed Software Projects &amp; Astraledger Billing System</h3>
+              <h3>45+ Completed Software Projects &amp; Astraledger Billing System</h3>
               <span class="timeline-org">Designed real-world small-business invoice software and 30+ apps across C++, Python, Assembly, JS, React, Flutter &amp; Kotlin</span>
             </span>
           </div>
@@ -1120,12 +1602,16 @@ function renderAboutPage() {
 
 let activeWorkCategory = 'All';
 let activeWorkView = 'grid'; // 'grid' or 'list'
+let activeWorkQuery = '';
 
 function renderWorkPage() {
-  const categories = ['All', 'Node.js', 'HTML/JS', 'Kotlin', 'React.js', 'Flutter', 'React Native', 'C++', 'Python', 'DSA', 'Assembly'];
-  const filtered = activeWorkCategory === 'All'
-    ? PROJECTS
-    : PROJECTS.filter(p => p.category === activeWorkCategory);
+  const categories = ['All', 'TypeScript', 'Node.js', 'HTML/JS', 'Kotlin', 'Flutter', 'Python', 'C++', 'React.js', 'PHP', 'DSA', 'React Native', 'Assembly'];
+  const q = activeWorkQuery.trim().toLowerCase();
+  const filtered = PROJECTS.filter(p => {
+    const matchCat = activeWorkCategory === 'All' || p.category === activeWorkCategory;
+    const matchQ = !q || `${p.title} ${p.category} ${p.highlight} ${p.summary} ${p.tags.join(' ')}`.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
 
   const filterButtons = categories.map(cat => {
     const cnt = cat === 'All' ? PROJECTS.length : PROJECTS.filter(p => p.category === cat).length;
@@ -1153,7 +1639,7 @@ function renderWorkPage() {
     <header class="page-head">
       <p class="eyebrow">Selected projects</p>
       <h1>${wordsSpan("Things I've", 0)} <em>${wordsSpan('built.', 2)}</em></h1>
-      <p class="page-intro">All 31 web, mobile, algorithm, and systems projects from my software engineering studies, internships, and independent work.</p>
+      <p class="page-intro">All 45 web, mobile, AI, game, algorithm, and systems projects from my software engineering studies, internships, and independent work.</p>
     </header>
     <section class="sec tone-dark" style="--win:'selected-projects'">
       <div class="filters">
@@ -1161,6 +1647,10 @@ function renderWorkPage() {
           ${filterButtons}
         </div>
         <div class="filters-right">
+          <label class="work-inline-search" aria-label="Filter projects by keyword">
+            <svg aria-hidden="true" fill="none" height="14" viewBox="0 0 24 24" width="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+            <input type="search" id="work-inline-query" value="${activeWorkQuery.replace(/"/g, '&quot;')}" placeholder="Filter projects..."/>
+          </label>
           <div class="view-toggle" role="group" aria-label="Layout view">
             <button type="button" class="${activeWorkView === 'grid' ? 'active' : ''}" data-view-mode="grid">Cards</button>
             <button type="button" class="${activeWorkView === 'list' ? 'active' : ''}" data-view-mode="list">Console</button>
@@ -1437,7 +1927,7 @@ function renderLinksPage() {
         <a data-marker="true" href="https://github.com/UzairBaig991" target="_blank" rel="noopener noreferrer me">
           <small>04</small>
           <i><svg aria-hidden="true" fill="none" height="22" viewBox="0 0 24 24" width="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"><path fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.82a9.6 9.6 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.86V21c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"></path></svg></i>
-          <div><h2>GitHub</h2><p>31+ repositories across C++, Python, JS, React, Flutter &amp; Kotlin</p></div>
+          <div><h2>GitHub</h2><p>50+ repositories across C++, Python, JS, React, Flutter &amp; Kotlin</p></div>
           <b>@UzairBaig991</b>
           ${ARROW_SVG}
         </a>
@@ -1684,6 +2174,60 @@ function initPageEvents() {
       activeWorkView = btn.getAttribute('data-view-mode');
       mainEl.innerHTML = renderWorkPage();
       initPageEvents();
+    });
+  });
+
+  const inlineSearchInput = document.getElementById('work-inline-query');
+  if (inlineSearchInput) {
+    inlineSearchInput.addEventListener('input', e => {
+      activeWorkQuery = e.target.value;
+      const pos = e.target.selectionStart;
+      mainEl.innerHTML = renderWorkPage();
+      initPageEvents();
+      const nextInput = document.getElementById('work-inline-query');
+      if (nextInput) {
+        nextInput.focus();
+        nextInput.setSelectionRange(pos, pos);
+      }
+    });
+  }
+
+  document.querySelectorAll('[data-skill-filter]').forEach(tag => {
+    tag.addEventListener('click', () => {
+      activeWorkCategory = tag.getAttribute('data-skill-filter') || 'All';
+      activeWorkQuery = '';
+      window.location.hash = '#work';
+    });
+  });
+
+  // Lightbox zoom on Project Detail Hero
+  const detailHero = document.querySelector('.detail-hero');
+  if (detailHero) {
+    detailHero.addEventListener('click', () => {
+      const img = detailHero.querySelector('img');
+      const lb = document.getElementById('lightbox-modal');
+      const lbImg = document.getElementById('lightbox-img');
+      if (img && lb && lbImg) {
+        lbImg.src = img.src;
+        lbImg.alt = img.alt || 'Project preview';
+        lb.classList.add('is-open');
+      }
+    });
+  }
+
+  // Magnetic subtle pull on primary buttons
+  document.querySelectorAll('.btn, .social-icons a, .footer-socials a').forEach(btn => {
+    if (btn.dataset.magInit) return;
+    btn.dataset.magInit = '1';
+    btn.addEventListener('pointermove', e => {
+      if (e.pointerType === 'touch') return;
+      const r = btn.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width / 2)) * 0.18;
+      const dy = (e.clientY - (r.top + r.height / 2)) * 0.18;
+      btn.style.transform = `translate3d(${dx.toFixed(1)}px, ${dy.toFixed(1)}px, 0)`;
+    }, { passive: true });
+    btn.addEventListener('pointerleave', () => {
+      btn.style.transform = '';
     });
   });
 
@@ -2000,7 +2544,7 @@ paletteDots.forEach(btn => {
   const SEARCH_INDEX = [
     { title: 'Home', meta: 'Page · Overview', href: '#home' },
     { title: 'About Uzair Baig', meta: 'Page · Education, Internships & Story', href: '#about' },
-    { title: 'All 31 Projects', meta: 'Page · Portfolio Work (Cards & Console)', href: '#work' },
+    { title: 'All 45 Projects', meta: 'Page · Portfolio Work (Cards & Console)', href: '#work' },
     { title: 'Blog & Insights', meta: 'Page · 6 Engineering Articles', href: '#blog' },
     { title: 'Contact & Resume', meta: 'Page · Get in Touch & Download CV', href: '#contact' },
     { title: 'All Contact Links', meta: 'Page · Email, Phone, GitHub, LinkedIn', href: '#links' },
@@ -2099,7 +2643,7 @@ paletteDots.forEach(btn => {
   let messages = [
     {
       role: 'assistant',
-      text: "Hi! I'm UZAIR.i, Uzair Baig's portfolio assistant. Ask me about his 31+ projects, internships at Arch Technologies & Crixsoft Solution, skills, or how to get in touch."
+      text: "Hi! I'm UZAIR.i, Uzair Baig's portfolio assistant. Ask me about his 45+ projects, internships at Arch Technologies & Crixsoft Solution, skills, or how to get in touch."
     }
   ];
 
@@ -2165,12 +2709,12 @@ paletteDots.forEach(btn => {
     }
     if (s.includes('built') || s.includes('project') || s.includes('astraledger') || s.includes('erp') || s.includes('kotlin') || s.includes('flutter')) {
       return {
-        text: "Uzair has built 31+ projects! Highlights include:\n• Astraledger (Node.js GST & billing invoice system)\n• Enterprise Flow ERP (Node.js enterprise workflow suite)\n• UzairMart, MediCare Pharmacy, Crypto Tracker & Quiz App (Kotlin Android)\n• AI Recipe Finder (Flutter) & Invoice Maker (React Native)\n• Visual Maze Solver (Python DFS/BFS) & Restaurant System (x86 Assembly).",
-        links: [{ label: 'Browse All 31 Projects', href: '#work' }, { label: 'Astraledger Case Study', href: '#work/astraledger' }]
+        text: "Uzair has built 45+ projects! Highlights include:\n• Astraledger (Node.js GST & billing invoice system)\n• Enterprise Flow ERP (Node.js enterprise workflow suite)\n• UzairMart, MediCare Pharmacy, Crypto Tracker & Quiz App (Kotlin Android)\n• AI Recipe Finder (Flutter) & Invoice Maker (React Native)\n• Visual Maze Solver (Python DFS/BFS) & Restaurant System (x86 Assembly).",
+        links: [{ label: 'Browse All 45 Projects', href: '#work' }, { label: 'Astraledger Case Study', href: '#work/astraledger' }]
       };
     }
     return {
-      text: "Uzair Baig is a 5th-semester BS Software Engineering student at Riphah International University (Rawalpindi/Islamabad) and an aspiring full-stack & mobile developer with 31+ projects in C++, Python, React.js, Node.js, React Native, Flutter, and Kotlin.",
+      text: "Uzair Baig is a 5th-semester BS Software Engineering student at Riphah International University (Rawalpindi/Islamabad) and an aspiring full-stack & mobile developer with 45+ projects in C++, Python, React.js, Node.js, React Native, Flutter, and Kotlin.",
       links: [{ label: 'See All Projects', href: '#work' }, { label: 'More About Uzair', href: '#about' }, { label: 'Get in Touch', href: '#contact' }]
     };
   }
@@ -2217,6 +2761,216 @@ paletteDots.forEach(btn => {
     askQuestion(input.value);
   });
 })();
+
+/* === CUSTOM LIQUID-GLASS BUBBLE CURSOR ENGINE (120Hz/144Hz ULTRA-SMOOTH) === */
+(function initCustomBubbleCursor() {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const layer = document.getElementById('custom-cursor-layer');
+  const dot = document.getElementById('cursor-dot');
+  const bubblePos = document.getElementById('cursor-bubble-pos');
+  const bubble = document.getElementById('cursor-bubble');
+  const label = document.getElementById('cursor-label');
+  const poolDots = Array.from(document.querySelectorAll('.cursor-pool-dot'));
+  if (!layer || !dot || !bubblePos || !bubble || !label) return;
+
+  document.body.classList.add('custom-cursor-active');
+
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let curX = mouseX;
+  let curY = mouseY;
+  let lastTarget = null;
+  let rafId = 0;
+  let lastTime = 0;
+
+  // Pre-allocated trail nodes (zero DOM allocation during movement)
+  const trail = poolDots.map((el, i) => ({
+    el,
+    x: mouseX,
+    y: mouseY,
+    scale: Math.max(0.28, 0.78 - i * 0.11),
+    alpha: Math.max(0.12, 0.52 - i * 0.07)
+  }));
+
+  function updateCursorHoverState(target) {
+    if (!target || target === lastTarget) return;
+    lastTarget = target;
+    const workCard = target.closest('.work-card, .console-row');
+    const postCard = target.closest('.post-card');
+    const detailHero = target.closest('.detail-hero');
+    const interactive = target.closest('a, button, summary, [data-skill-filter], input, textarea, select, [role="button"]');
+
+    if (workCard) {
+      layer.classList.add('is-card');
+      layer.classList.remove('is-interactive');
+      label.textContent = 'VIEW ↗';
+    } else if (postCard) {
+      layer.classList.add('is-card');
+      layer.classList.remove('is-interactive');
+      label.textContent = 'READ ↗';
+    } else if (detailHero) {
+      layer.classList.add('is-card');
+      layer.classList.remove('is-interactive');
+      label.textContent = 'ZOOM ⊕';
+    } else if (interactive) {
+      layer.classList.remove('is-card');
+      layer.classList.add('is-interactive');
+    } else {
+      layer.classList.remove('is-card', 'is-interactive');
+    }
+  }
+
+  function tick(now) {
+    const dt = lastTime ? Math.min(34, now - lastTime) : 16.67;
+    lastTime = now;
+
+    // Frame-rate independent exponential smoothing (tau = 24ms -> snappy, silky-smooth glide)
+    const k = 1 - Math.exp(-dt / 24);
+    const dx = mouseX - curX;
+    const dy = mouseY - curY;
+    curX += dx * k;
+    curY += dy * k;
+
+    const vx = dx * k;
+    const vy = dy * k;
+    const speed = Math.hypot(vx, vy);
+
+    // Move outer bubble container on GPU compositor thread
+    bubblePos.style.transform = `translate3d(${curX.toFixed(2)}px, ${curY.toFixed(2)}px, 0)`;
+
+    // Subtle organic liquid stretch on inner bubble
+    const isCard = layer.classList.contains('is-card');
+    if (isCard || speed < 0.35) {
+      bubble.style.transform = 'translate3d(0,0,0)';
+    } else {
+      const angle = Math.atan2(vy, vx) * (180 / Math.PI);
+      const stretch = Math.min(speed * 0.015, 0.24);
+      const sx = (1 + stretch).toFixed(3);
+      const sy = (1 - stretch * 0.48).toFixed(3);
+      bubble.style.transform = `rotate(${angle.toFixed(1)}deg) scale(${sx}, ${sy})`;
+    }
+
+    // Update pre-allocated micro-bubble chain with zero DOM churn
+    let prevX = curX;
+    let prevY = curY;
+    const tk = 1 - Math.exp(-dt / 32);
+    const showTrail = !isCard && speed > 0.8;
+    for (let i = 0; i < trail.length; i++) {
+      const node = trail[i];
+      node.x += (prevX - node.x) * tk;
+      node.y += (prevY - node.y) * tk;
+      prevX = node.x;
+      prevY = node.y;
+      const op = showTrail ? Math.min(node.alpha, speed * 0.045) : 0;
+      node.el.style.opacity = op.toFixed(2);
+      node.el.style.transform = `translate3d(${node.x.toFixed(2)}px, ${node.y.toFixed(2)}px, 0) scale(${node.scale})`;
+    }
+
+    if (Math.hypot(mouseX - curX, mouseY - curY) > 0.08 || speed > 0.15) {
+      rafId = requestAnimationFrame(tick);
+    } else {
+      bubble.style.transform = 'translate3d(0,0,0)';
+      for (let i = 0; i < trail.length; i++) trail[i].el.style.opacity = '0';
+      rafId = 0;
+      lastTime = 0;
+    }
+  }
+
+  window.addEventListener('pointermove', e => {
+    if (e.pointerType === 'touch') return;
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    // Instant 0ms hardware-level update for the precision center dot
+    dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+    updateCursorHoverState(e.target);
+    if (!rafId) {
+      lastTime = 0;
+      rafId = requestAnimationFrame(tick);
+    }
+  }, { passive: true });
+
+  window.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'touch') return;
+    layer.classList.add('is-pressed');
+  }, { passive: true });
+
+  window.addEventListener('pointerup', () => {
+    layer.classList.remove('is-pressed');
+  }, { passive: true });
+})();
+
+/* === TOP SCROLL PROGRESS BEAM === */
+(function initScrollBeam() {
+  const bar = document.getElementById('scroll-beam-bar');
+  if (!bar) return;
+  function updateBeam() {
+    const maxS = document.documentElement.scrollHeight - window.innerHeight;
+    const p = maxS > 0 ? Math.min(1, Math.max(0, window.scrollY / maxS)) : 0;
+    bar.style.transform = `scaleX(${p.toFixed(4)})`;
+  }
+  window.addEventListener('scroll', updateBeam, { passive: true });
+  window.addEventListener('resize', updateBeam, { passive: true });
+  window.addEventListener('hashchange', () => setTimeout(updateBeam, 60));
+  updateBeam();
+})();
+
+/* === HERO ROLE TYPEWRITER CYCLER === */
+(function initHeroTypewriter() {
+  const ROLES = [
+    'Full-Stack Developer',
+    'BS Software Engineering Student',
+    'Kotlin & Flutter App Developer',
+    'C++ & Python Problem Solver'
+  ];
+  let roleIdx = 0;
+  let charIdx = ROLES[0].length;
+  let deleting = false;
+
+  function stepTypewriter() {
+    const el = document.getElementById('hero-role-text');
+    if (!el) {
+      setTimeout(stepTypewriter, 1000);
+      return;
+    }
+    const currentWord = ROLES[roleIdx];
+    if (!deleting) {
+      charIdx++;
+      el.textContent = currentWord.slice(0, charIdx);
+      if (charIdx >= currentWord.length) {
+        deleting = true;
+        setTimeout(stepTypewriter, 2200);
+        return;
+      }
+      setTimeout(stepTypewriter, 55);
+    } else {
+      charIdx--;
+      el.textContent = currentWord.slice(0, Math.max(1, charIdx));
+      if (charIdx <= 1) {
+        deleting = false;
+        roleIdx = (roleIdx + 1) % ROLES.length;
+        charIdx = 0;
+        setTimeout(stepTypewriter, 180);
+        return;
+      }
+      setTimeout(stepTypewriter, 28);
+    }
+  }
+  setTimeout(stepTypewriter, 2400);
+})();
+
+/* === LIGHTBOX CLOSE EVENTS === */
+(function initLightbox() {
+  const lb = document.getElementById('lightbox-modal');
+  const closeBtn = document.getElementById('lightbox-close');
+  if (!lb) return;
+  function closeLb() { lb.classList.remove('is-open'); }
+  closeBtn?.addEventListener('click', closeLb);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  window.addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('is-open')) closeLb(); });
+})();
+
 </script>
 </body>
 </html>
